@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ t.title }} · {{ name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>{{ t.emoji }} {{ t.title }}</h1>
+  <div class="bar"><div id="prog"></div></div>
+  <div id="quiz"></div>
+  <div id="result" class="out" hidden>
+    <div class="emoji big" id="rEmoji"></div>
+    <h2 id="rTitle"></h2>
+    <p id="rText"></p>
+    <div class="row">
+      <button class="btn small" id="share">Paylaş / Kartı indir</button>
+      <a class="btn small ghost" href="/test/{{ slug }}">Tekrar çöz</a>
+      <a class="btn small ghost" href="/">Diğer testler</a>
+    </div>
+  </div>
+</section>
+<script>const QUESTIONS = {{ t.questions|tojson }}; const SLUG = {{ slug|tojson }};</script>
+<script src="/static/app.js"></script>
+<script>initTest();</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Mazeret Fabrikası · {{ name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>🛠️ Mazeret Fabrikası</h1>
+  <p class="muted">Kime, ne için ve hangi tonda mazeret lazım? {{ "Yapay zekâ devrede." if ai else "Şu an yedek fabrika çalışıyor." }} Günlük {{ limit }} üretim hakkın var.</p>
+  <label>Kime?</label>
+  <select id="kime">{% for k in kime %}<option>{{ k }}</option>{% endfor %}</select>
+  <label>Ne oldu?</label>
+  <select id="ne">{% for n in ne %}<option>{{ n }}</option>{% endfor %}</select>
+  <label>Ton</label>
+  <select id="ton">
+    {% for k, v in tonlar.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
+  </select>
+  <button class="btn" id="go">Mazeret üret</button>
+  <div id="out" class="out" hidden>
+    <p id="txt"></p>
+    <p class="muted small" id="note"></p>
+    <div class="row">
+      <button class="btn small" id="copy">Kopyala</button>
+      <button class="btn small" id="card">Kart indir</button>
+    </div>
+  </div>
+</section>
+<script src="/static/app.js"></script>
+<script>initMazeret();</script>
+{% endblock %}

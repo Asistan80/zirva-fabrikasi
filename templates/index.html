@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Zırva Fabrikası</h1>
+  <p>Mazeretini üretiriz, kişiliğini saçma şekilde analiz ederiz. Ciddiye alma, paylaş.</p>
+  <a class="btn" href="/mazeret">🛠️ Mazeret Üret</a>
+</section>
+<section id="testler">
+  <h2>Saçma Testler</h2>
+  <div class="grid">
+  {% for slug, t in tests.items() %}
+    <a class="card" href="/test/{{ slug }}">
+      <div class="emoji">{{ t.emoji }}</div>
+      <h3>{{ t.title }}</h3>
+      <p>{{ t.desc }}</p>
+      <span class="tag">{{ t.questions|length }} soru</span>
+    </a>
+  {% endfor %}
+  </div>
+</section>
+{% endblock %}

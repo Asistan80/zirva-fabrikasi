@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ name }}{% endblock %}</title>
+<meta name="description" content="Mazeret üret, saçma testler çöz, sonucunu paylaş. Tamamen mizah amaçlıdır.">
+<meta property="og:title" content="{{ name }}">
+<meta property="og:description" content="Mazeret Fabrikası ve Saçma Testler. Tamamen mizah amaçlıdır.">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="/">🏭 {{ name }}</a>
+  <nav><a href="/mazeret">Mazeret Fabrikası</a><a href="/#testler">Saçma Testler</a></nav>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer>
+  <p>⚠️ Bu sitedeki her şey <b>mizah ve eğlence amaçlıdır</b>. Testlerin bilimsel hiçbir dayanağı yoktur; mazeretler yalnızca gülmek içindir, gerçek hayatta kullanmanızı önermeyiz.</p>
+  <p>© {{ name }}</p>
+</footer>
+</body>
+</html>
