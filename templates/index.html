@@ -1,21 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
-  <h1>Zırva Fabrikası</h1>
-  <p>Mazeretini üretiriz, kişiliğini saçma şekilde analiz ederiz. Ciddiye alma, paylaş.</p>
-  <a class="btn" href="/mazeret">🛠️ Mazeret Üret</a>
+  <div class="floaties"><span>🛠️</span><span>🔮</span><span>🔥</span><span>🧪</span></div>
+  <h1>{{ name }}</h1>
+  <p class="sub">{{ S.tagline }}</p>
+  <div class="type" id="phrases" data-list='["Patronuma ne desem?","Hangi Osmanlı padişahısın?","Bugün burcun ne diyor?","Beni kızartın lütfen.","Mazeret mi lazım? Fabrika hazır."]'></div>
+  <div class="row" style="margin-top:22px">
+    {% if S.mazeret_on %}<a class="btn" href="/mazeret">🛠️ Mazeret Üret</a>{% endif %}
+    <a class="btn ghost" href="/testler">🧪 Teste Başla</a>
+  </div>
 </section>
-<section id="testler">
-  <h2>Saçma Testler</h2>
+
+<div class="marquee" aria-hidden="true"><div>MAZERET FABRİKASI ✦ SAÇMA TESTLER ✦ BURÇ PARODİSİ ✦ KIZARTMA ODASI ✦ MİZAH AMAÇLIDIR ✦ MAZERET FABRİKASI ✦ SAÇMA TESTLER ✦ BURÇ PARODİSİ ✦ KIZARTMA ODASI ✦ MİZAH AMAÇLIDIR ✦ </div></div>
+
+<section class="block rv">
+  <div class="stats glass">
+    <div class="stat"><b data-n="{{ counts.mazeret }}">0</b><span>mazeret üretildi</span></div>
+    <div class="stat"><b data-n="{{ counts.tests }}">0</b><span>test çözüldü</span></div>
+    <div class="stat"><b data-n="{{ counts.burc }}">0</b><span>burç okundu</span></div>
+    <div class="stat"><b data-n="{{ counts.roast }}">0</b><span>kızartma yapıldı</span></div>
+  </div>
+</section>
+
+<section class="block rv">
+  <h2 class="sec">✨ Bölümler</h2>
   <div class="grid">
-  {% for slug, t in tests.items() %}
-    <a class="card" href="/test/{{ slug }}">
-      <div class="emoji">{{ t.emoji }}</div>
-      <h3>{{ t.title }}</h3>
-      <p>{{ t.desc }}</p>
-      <span class="tag">{{ t.questions|length }} soru</span>
+    {% if S.mazeret_on %}<a class="tile" style="--g1:#a56bff;--g2:#ff5c7a" href="/mazeret"><span class="em">🛠️</span><h3>Mazeret Fabrikası</h3><p>Kime, ne için, hangi tonda? Yapay zekâ üretir.</p><span class="chip">Yapay zekâlı</span></a>{% endif %}
+    <a class="tile" style="--g1:#4c8dff;--g2:#a56bff" href="/testler"><span class="em">🧪</span><h3>Saçma Testler</h3><p>{{ tests|length }} test, sonuç kartı paylaşılabilir.</p><span class="chip">{{ tests|length }} test</span></a>
+    {% if S.burc_on %}<a class="tile" style="--g1:#7c3aed;--g2:#4c8dff" href="/burc"><span class="em">🔮</span><h3>Burç Parodisi</h3><p>Her gün yenilenen, tamamen uydurma yorum.</p><span class="chip">Günlük</span></a>{% endif %}
+    {% if S.roast_on %}<a class="tile" style="--g1:#ff5c7a;--g2:#f59e0b" href="/kizartma"><span class="em">🔥</span><h3>Kızartma Odası</h3><p>Bir şey yaz, dostça kızartılsın. 3 seviye.</p><span class="chip">Yapay zekâlı</span></a>{% endif %}
+  </div>
+</section>
+
+<section class="block rv">
+  <h2 class="sec">📅 Günün Mazereti</h2>
+  <div class="glass feature">
+    <p class="muted small">{{ daily.emoji }} Bugünün resmi mazereti (her gün değişir)</p>
+    <p id="dailytxt" style="font-size:1.25rem;color:var(--tx);font-weight:600;margin:8px 0">{{ daily.text }}</p>
+    <div class="row" style="justify-content:flex-start"><button class="btn sm" onclick="copyDaily()">Kopyala</button><a class="btn sm ghost" href="/mazeret">Kendi mazeretini üret</a></div>
+  </div>
+</section>
+
+<section class="block rv">
+  <h2 class="sec">🧪 Saçma Testler</h2>
+  <div class="grid">
+    {% for slug, t in tests.items() %}
+    <a class="tile" data-test="{{ slug }}" style="--g1:{{ t.grad[0] }};--g2:{{ t.grad[1] }}" href="/test/{{ slug }}">
+      <span class="done-mark">✓</span><span class="em">{{ t.emoji }}</span><h3>{{ t.title }}</h3><p>{{ t.desc }}</p><span class="chip">{{ t.questions|length }} soru · 1 dk</span>
     </a>
-  {% endfor %}
+    {% endfor %}
   </div>
 </section>
 {% endblock %}

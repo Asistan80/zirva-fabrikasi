@@ -1,22 +1,32 @@
 {% extends "base.html" %}
 {% block title %}{{ t.title }} · {{ name }}{% endblock %}
+{% block desc %}{{ t.desc }}{% endblock %}
 {% block content %}
-<section class="panel">
+<div class="quiz-head" style="--g1:{{ t.grad[0] }};--g2:{{ t.grad[1] }}">
   <h1>{{ t.emoji }} {{ t.title }}</h1>
   <div class="bar"><div id="prog"></div></div>
+</div>
+<section class="glass panel" style="margin-top:16px">
   <div id="quiz"></div>
   <div id="result" class="out" hidden>
-    <div class="emoji big" id="rEmoji"></div>
-    <h2 id="rTitle"></h2>
-    <p id="rText"></p>
+    <div class="result-big" id="rEmoji"></div>
+    <h2 id="rTitle" style="margin:6px 0"></h2>
+    <p id="rText" class="txt" style="min-height:0"></p>
+    <span class="pct" id="rPct"></span>
     <div class="row">
-      <button class="btn small" id="share">Paylaş / Kartı indir</button>
-      <a class="btn small ghost" href="/test/{{ slug }}">Tekrar çöz</a>
-      <a class="btn small ghost" href="/">Diğer testler</a>
+      <button class="btn sm" id="share">🖼️ Kartı paylaş / indir</button>
+      <button class="btn sm ghost" id="wa">💬 WhatsApp</button>
+      <button class="btn sm ghost" id="copy">📋 Kopyala</button>
     </div>
+    <div class="row"><a class="btn sm ghost" href="/test/{{ slug }}">🔁 Tekrar çöz</a><a class="btn sm ghost" href="/testler">Tüm testler</a></div>
+  </div>
+  <p class="muted small" style="margin-top:14px">İpucu: klavyede 1-4 tuşlarıyla da cevaplayabilirsin.</p>
+</section>
+<section class="block">
+  <h2 class="sec">Sıradaki test?</h2>
+  <div class="grid">
+    {% for k, o in others %}<a class="tile" data-test="{{ k }}" style="--g1:{{ o.grad[0] }};--g2:{{ o.grad[1] }}" href="/test/{{ k }}"><span class="done-mark">✓</span><span class="em">{{ o.emoji }}</span><h3>{{ o.title }}</h3><p>{{ o.desc }}</p></a>{% endfor %}
   </div>
 </section>
-<script>const QUESTIONS = {{ t.questions|tojson }}; const SLUG = {{ slug|tojson }};</script>
-<script src="/static/app.js"></script>
-<script>initTest();</script>
 {% endblock %}
+{% block scripts %}<script>const QUESTIONS = {{ t.questions|tojson }}; const SLUG = {{ slug|tojson }}; initTest();</script>{% endblock %}

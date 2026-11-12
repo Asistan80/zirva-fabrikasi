@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Burç Parodisi · {{ name }}{% endblock %}
+{% block content %}
+<section class="glass panel">
+  <h1>🔮 Burç Parodisi</h1>
+  <p class="muted">{{ today }} · Her gün yenilenen, tamamen uydurma burç yorumları. Gerçek astrolojiyle alakası yoktur, ciddiye almayın.</p>
+  <div class="signs" style="margin-top:18px">
+    {% for slug, nm, ic in signs %}<button class="sign" data-s="{{ slug }}"><b>{{ ic }}</b>{{ nm }}</button>{% endfor %}
+  </div>
+  <div id="reading" class="reading out" style="text-align:left" hidden></div>
+</section>
+{% endblock %}
+{% block scripts %}<script>initBurc();</script>{% endblock %}

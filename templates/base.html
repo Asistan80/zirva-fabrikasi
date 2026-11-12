@@ -1,23 +1,40 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ name }}{% endblock %}</title>
-<meta name="description" content="Mazeret üret, saçma testler çöz, sonucunu paylaş. Tamamen mizah amaçlıdır.">
+<title>{% block title %}{{ name }} · Mazeret, Test, Burç, Kızartma{% endblock %}</title>
+<meta name="description" content="{% block desc %}Mazeret üret, saçma testler çöz, burç parodini oku, kendini kızart. Tamamen mizah amaçlıdır.{% endblock %}">
 <meta property="og:title" content="{{ name }}">
-<meta property="og:description" content="Mazeret Fabrikası ve Saçma Testler. Tamamen mizah amaçlıdır.">
+<meta property="og:description" content="Mazeret Fabrikası, Saçma Testler, Burç Parodisi ve Kızartma Odası. Tamamen mizah amaçlıdır.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#a56bff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
 <link rel="stylesheet" href="/static/style.css">
+<script>try{var t=JSON.parse(localStorage.getItem('zf_theme'));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
-<header class="nav">
-  <a class="brand" href="/">🏭 {{ name }}</a>
-  <nav><a href="/mazeret">Mazeret Fabrikası</a><a href="/#testler">Saçma Testler</a></nav>
-</header>
-<main>{% block content %}{% endblock %}</main>
+<div class="blobs"><i></i><i></i><i></i></div>
+<canvas id="confetti"></canvas>
+{% if S.announcement_on and S.announcement %}<div class="banner">📣 {{ S.announcement }}</div>{% endif %}
+<header class="nav"><div class="wrap">
+  <a class="brand" href="/"><span class="gear">⚙️</span><b>{{ name }}</b></a>
+  <nav class="links" id="links">
+    {% if S.mazeret_on %}<a href="/mazeret" class="{{ 'on' if request.path=='/mazeret' }}">🛠️ Mazeret</a>{% endif %}
+    <a href="/testler" class="{{ 'on' if request.path.startswith('/test') }}">🧪 Testler</a>
+    {% if S.burc_on %}<a href="/burc" class="{{ 'on' if request.path=='/burc' }}">🔮 Burç</a>{% endif %}
+    {% if S.roast_on %}<a href="/kizartma" class="{{ 'on' if request.path=='/kizartma' }}">🔥 Kızartma</a>{% endif %}
+  </nav>
+  <div><button class="icon-btn" id="theme" title="Tema" aria-label="Tema değiştir">🌓</button> <button class="icon-btn burger" id="burger" aria-label="Menü">☰</button></div>
+</div></header>
+<main class="wrap">{% block content %}{% endblock %}</main>
 <footer>
-  <p>⚠️ Bu sitedeki her şey <b>mizah ve eğlence amaçlıdır</b>. Testlerin bilimsel hiçbir dayanağı yoktur; mazeretler yalnızca gülmek içindir, gerçek hayatta kullanmanızı önermeyiz.</p>
-  <p>© {{ name }}</p>
+  <div class="warn">⚠️ Bu sitedeki her şey <b>mizah ve eğlence amaçlıdır</b>. Testlerin, burçların ve kızartmaların bilimsel hiçbir dayanağı yoktur; mazeretleri gerçek hayatta kullanmanızı önermeyiz. Yapay zekâ çıktıları hatalı olabilir.</div>
+  <div><a href="/mazeret">Mazeret</a><a href="/testler">Testler</a><a href="/burc">Burç</a><a href="/kizartma">Kızartma</a></div>
+  <p>© {{ year }} {{ name }}</p>
 </footer>
+<div id="toast" role="status"></div>
+<script src="/static/app.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

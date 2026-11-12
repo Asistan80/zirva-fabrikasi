@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Yönetim · {{ name }}{% endblock %}
+{% block content %}
+<section class="glass panel" style="max-width:420px;margin:60px auto">
+  <h1>🔐 Yönetim Paneli</h1>
+  {% if disabled %}
+    <p class="muted">Panel kapalı. Render'da <b>ADMIN_PASSWORD</b> ortam değişkenini tanımlayıp yeniden deploy et.</p>
+  {% else %}
+    {% if error %}<div class="flash" style="background:rgba(239,68,68,.25)">{{ error }}</div>{% endif %}
+    <form method="post"><label for="password">Şifre</label><input type="password" id="password" name="password" autofocus autocomplete="current-password">
+    <div class="row" style="justify-content:flex-start"><button class="btn">Giriş yap</button></div></form>
+  {% endif %}
+</section>
+{% endblock %}

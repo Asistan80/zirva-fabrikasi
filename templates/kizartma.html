@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Kızartma Odası · {{ name }}{% endblock %}
+{% block content %}
+<section class="glass panel">
+  <h1>🔥 Kızartma Odası</h1>
+  <p class="muted">Bir şey yaz (planın, hobin, bugün yaptığın bir şey) ve dostça kızartıl. {{ "🤖 Yapay zekâ devrede." if ai else "🛠️ Şu an yedek kızartıcı çalışıyor." }} Kişisel özelliklere (görünüş, sağlık, kökeni) dokunmayız, sadece konuyu kızartırız.</p>
+  <label for="text">Neyi kızartalım?</label>
+  <textarea id="text" maxlength="200" placeholder="Örn: Yarın sabah 6'da kalkıp spora başlayacağım"></textarea>
+  <label>Acı seviyesi</label>
+  <div class="seg">
+    {% for k, v in levels.items() %}<span><input type="radio" name="lv" id="lv{{ k }}" value="{{ k }}" {{ 'checked' if k==2 }}><label for="lv{{ k }}">{{ ['🌶️','🌶️🌶️','🌶️🌶️🌶️'][k-1] }} {{ v[0] }}</label></span>{% endfor %}
+  </div>
+  <div class="row" style="justify-content:flex-start;margin-top:20px"><button class="btn" id="go">🔥 Kızart</button></div>
+  <div id="out" class="out" hidden>
+    <div class="txt" id="txt"></div>
+    <p class="muted small" id="note"></p>
+    <div class="row"><button class="btn sm ghost" id="copy">📋 Kopyala</button><button class="btn sm ghost" id="wa">💬 WhatsApp</button><button class="btn sm ghost" id="card">🖼️ Kart indir</button></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script>initRoast();</script>{% endblock %}

@@ -1,27 +1,45 @@
 {% extends "base.html" %}
 {% block title %}Mazeret Fabrikası · {{ name }}{% endblock %}
 {% block content %}
-<section class="panel">
+<section class="glass panel">
   <h1>🛠️ Mazeret Fabrikası</h1>
-  <p class="muted">Kime, ne için ve hangi tonda mazeret lazım? {{ "Yapay zekâ devrede." if ai else "Şu an yedek fabrika çalışıyor." }} Günlük {{ limit }} üretim hakkın var.</p>
-  <label>Kime?</label>
+  <p class="muted">Kime, ne için ve hangi tonda mazeret lazım? {{ "🤖 Yapay zekâ devrede." if ai else "🛠️ Şu an yedek fabrika çalışıyor." }} Günlük {{ limit }} yapay zekâ hakkın var.</p>
+  <label for="kime">Kime?</label>
   <select id="kime">{% for k in kime %}<option>{{ k }}</option>{% endfor %}</select>
-  <label>Ne oldu?</label>
+  <label for="ne">Ne oldu?</label>
   <select id="ne">{% for n in ne %}<option>{{ n }}</option>{% endfor %}</select>
   <label>Ton</label>
-  <select id="ton">
-    {% for k, v in tonlar.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
-  </select>
-  <button class="btn" id="go">Mazeret üret</button>
+  <div class="seg">
+    {% for k, v in tonlar.items() %}<span><input type="radio" name="ton" id="t_{{ k }}" value="{{ k }}" {{ 'checked' if loop.first }}><label for="t_{{ k }}">{{ v[0] }} {{ v[1] }}</label></span>{% endfor %}
+  </div>
+  <label for="detail">Ek ayrıntı <span class="muted">(isteğe bağlı)</span></label>
+  <input type="text" id="detail" maxlength="120" placeholder="Örn: kedim hastalandı, otobüs şoförü yanlış yola girdi...">
+  <div class="row" style="justify-content:flex-start;margin-top:20px">
+    <button class="btn" id="go">✨ Mazeret üret</button>
+    <button class="btn ghost" id="rand">🎲 Şansıma bırak</button>
+  </div>
   <div id="out" class="out" hidden>
-    <p id="txt"></p>
+    <div class="txt" id="txt"></div>
     <p class="muted small" id="note"></p>
+    <p class="small muted" style="margin:10px 0 0">Fabrika inandırıcılık ölçümü: <b id="sc"></b> <i>(bilimsel değildir)</i></p>
+    <div class="meter"><i id="scbar"></i></div>
     <div class="row">
-      <button class="btn small" id="copy">Kopyala</button>
-      <button class="btn small" id="card">Kart indir</button>
+      <button class="btn sm var" data-v="kisa">✂️ Kısalt</button>
+      <button class="btn sm var" data-v="uzun">📜 Uzat</button>
+      <button class="btn sm var" data-v="komik">😂 Daha komik</button>
+    </div>
+    <div class="row">
+      <button class="btn sm ghost" id="copy">📋 Kopyala</button>
+      <button class="btn sm ghost" id="fav">⭐ Favori</button>
+      <button class="btn sm ghost" id="wa">💬 WhatsApp</button>
+      <button class="btn sm ghost" id="card">🖼️ Kart indir</button>
     </div>
   </div>
 </section>
-<script src="/static/app.js"></script>
-<script>initMazeret();</script>
+<section class="glass panel hist">
+  <h2 style="margin:0 0 10px">⭐ Favorilerim</h2><div id="favs"></div>
+  <h2 style="margin:24px 0 10px;display:flex;justify-content:space-between;align-items:center">🕘 Geçmiş <button class="btn sm ghost" id="clear">Temizle</button></h2><div id="hist"></div>
+  <p class="muted small">Geçmiş ve favoriler sadece bu tarayıcıda saklanır.</p>
+</section>
 {% endblock %}
+{% block scripts %}<script>initMazeret();</script>{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Saçma Testler · {{ name }}{% endblock %}
+{% block content %}
+<section class="hero" style="padding-bottom:20px"><h1 style="font-size:clamp(2rem,6vw,3rem)">🧪 Saçma Testler</h1><p class="sub">Bilimsel hiçbir dayanağı yok. Sonuçlar tamamen eğlence amaçlı.</p></section>
+<div class="grid">
+  {% for slug, t in tests.items() %}
+  <a class="tile rv" data-test="{{ slug }}" style="--g1:{{ t.grad[0] }};--g2:{{ t.grad[1] }}" href="/test/{{ slug }}">
+    <span class="done-mark">✓</span><span class="em">{{ t.emoji }}</span><h3>{{ t.title }}</h3><p>{{ t.desc }}</p><span class="chip">{{ t.questions|length }} soru · 1 dk</span>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

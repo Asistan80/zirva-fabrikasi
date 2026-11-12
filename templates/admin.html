@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Yönetim · {{ name }}{% endblock %}
+{% block content %}
+<section class="glass panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <h1>🎛️ Kontrol Paneli</h1>
+    <div class="row" style="margin:0"><a class="btn sm ghost" href="/" target="_blank">Siteyi aç</a><a class="btn sm ghost" href="/admin/backup">⬇️ Yedek indir</a><a class="btn sm danger" href="/admin/logout">Çıkış</a></div>
+  </div>
+  {% for m in get_flashed_messages() %}<div class="flash">{{ m }}</div>{% endfor %}
+  <p class="muted small">Yapay zekâ: {{ "✅ anahtar tanımlı (" ~ model ~ ")" if api_on else "⚠️ ANTHROPIC_API_KEY yok, yedek üreticiler çalışıyor" }} · İstatistik başlangıcı: {{ st.since }}</p>
+</section>
+
+<section class="glass panel">
+  <h2 style="margin:0 0 12px">📊 İstatistikler</h2>
+  <div class="stats">
+    <div class="stat"><b>{{ st.mazeret.total }}</b><span>mazeret (🤖 {{ st.mazeret.ai }} / 🛠️ {{ st.mazeret.offline }})</span></div>
+    <div class="stat"><b>{{ st.roast.total }}</b><span>kızartma (🤖 {{ st.roast.ai }} / 🛠️ {{ st.roast.offline }})</span></div>
+    <div class="stat"><b>{{ st.burc.total }}</b><span>burç okuma</span></div>
+    <div class="stat"><b>{{ tstats|sum(attribute='done') }}</b><span>test çözüldü</span></div>
+  </div>
+  <h3 style="margin:22px 0 0">Son 14 gün</h3>
+  {% if chart %}
+  <div class="bars">
+    {% for day, tot, h in chart %}
+      <div title="{{ day }}: {{ tot }}"><span>{{ tot }}</span><i style="height:{{ h }}px"></i><span>{{ day }}</span></div>
+    {% endfor %}
+  </div>
+  {% else %}<p class="muted small">Henüz veri yok.</p>{% endif %}
+</section>
+
+<div class="agrid">
+<section class="glass panel" id="ayarlar" style="margin-top:22px">
+  <h2 style="margin:0 0 6px">⚙️ Site ayarları</h2>
+  <form method="post" action="/admin/settings">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <label>Site adı</label><input type="text" name="site_title" value="{{ s.site_title }}" maxlength="40">
+    <label>Slogan</label><input type="text" name="tagline" value="{{ s.tagline }}" maxlength="160">
+    <label>Duyuru bandı metni</label><input type="text" name="announcement" value="{{ s.announcement }}" maxlength="200">
+    <div class="switch"><span>Duyuru bandını göster</span><input type="checkbox" name="announcement_on" {{ 'checked' if s.announcement_on }}></div>
+    <div class="switch"><span>Yapay zekâyı kullan</span><input type="checkbox" name="ai_enabled" {{ 'checked' if s.ai_enabled }}></div>
+    <label>Kişi başı günlük yapay zekâ hakkı</label><input type="number" name="daily_limit" min="1" max="200" value="{{ s.daily_limit }}">
+    <div class="switch"><span>🛠️ Mazeret Fabrikası açık</span><input type="checkbox" name="mazeret_on" {{ 'checked' if s.mazeret_on }}></div>
+    <div class="switch"><span>🔥 Kızartma Odası açık</span><input type="checkbox" name="roast_on" {{ 'checked' if s.roast_on }}></div>
+    <div class="switch"><span>🔮 Burç Parodisi açık</span><input type="checkbox" name="burc_on" {{ 'checked' if s.burc_on }}></div>
+    <h3 style="margin:18px 0 0">Testler (işaretliler görünür)</h3>
+    {% for ts in tstats %}<div class="switch"><span>{{ ts.emoji }} {{ ts.title }} <span class="muted small">· {{ ts.done }} çözüm</span></span><input type="checkbox" name="show_{{ ts.slug }}" {{ '' if ts.hidden else 'checked' }}></div>{% endfor %}
+    <div class="row" style="justify-content:flex-start"><button class="btn">Kaydet</button></div>
+  </form>
+  <form method="post" action="/admin/ai-test" style="margin-top:10px"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn sm ghost">🤖 Yapay zekâ bağlantısını test et</button></form>
+</section>
+
+<section class="glass panel" id="havuz" style="margin-top:22px">
+  <h2 style="margin:0 0 6px">📝 Yedek havuzlar</h2>
+  <p class="muted small">Her satır bir metin. Yapay zekâ kapalıyken veya limit dolunca bu cümleler kullanılır. Mazeret cümlelerinin sonuna otomatik "Bu yüzden ..." eklenir.</p>
+  <form method="post" action="/admin/pool">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    {% for k, v in tonlar.items() %}<label>{{ v[0] }} {{ v[1] }} mazeretler</label><textarea name="pool_{{ k }}">{{ s.extra_excuses[k]|join('\n') }}</textarea>{% endfor %}
+    <label>🔥 Kızartmalar (<code>{x}</code> yazılan metnin yerine geçer)</label><textarea name="pool_roast">{{ s.extra_roasts|join('\n') }}</textarea>
+    <div class="row" style="justify-content:flex-start"><button class="btn">Havuzları kaydet</button></div>
+  </form>
+</section>
+</div>
+
+<section class="glass panel">
+  <h2 style="margin:0 0 10px">🧪 Test sonuç dağılımı</h2>
+  <table>{% for ts in tstats %}<tr><td>{{ ts.emoji }} {{ ts.title }}</td><td>{{ ts.done }} çözüm</td><td class="muted">{% for n, c in ts.top %}{{ n }}: {{ c }}{{ ' · ' if not loop.last }}{% endfor %}</td></tr>{% endfor %}</table>
+</section>
+
+<div class="agrid">
+<section class="glass panel" style="margin-top:22px">
+  <h2 style="margin:0 0 10px">💾 Yedek yükle</h2>
+  <p class="muted small">Render ücretsiz planda veriler uyku/deploy sonrası sıfırlanabilir. Yedek dosyasını buradan geri yükleyebilirsin.</p>
+  <form method="post" action="/admin/restore" enctype="multipart/form-data"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="file" name="file" accept=".json"><div class="row" style="justify-content:flex-start"><button class="btn sm">Yükle</button></div></form>
+</section>
+<section class="glass panel" style="margin-top:22px">
+  <h2 style="margin:0 0 10px">🧹 İstatistikleri sıfırla</h2>
+  <form method="post" action="/admin/reset"><input type="hidden" name="csrf" value="{{ csrf }}"><label>Onay için SIFIRLA yaz</label><input type="text" name="confirm" autocomplete="off"><div class="row" style="justify-content:flex-start"><button class="btn sm danger">Sıfırla</button></div></form>
+</section>
+</div>
+{% endblock %}

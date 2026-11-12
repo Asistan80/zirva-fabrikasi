@@ -69,3 +69,82 @@ TESTS = {
    "eskisehir": ("Eskişehir", "Sakin, kültürlü, genç ruhlusun. Bisikletle yavaş yaşamayı bilirsin."),
   }},
 }
+
+# ---- v2: 4 yeni test ----
+TESTS.update({
+ "zombi": {
+  "title": "Zombi Kıyametinde Rolün Ne Olurdu?",
+  "emoji": "🧟",
+  "desc": "İlk gün mü hayatta kalırsın, yoksa ilk gün mü gidersin? Hadi bakalım.",
+  "questions": [
+   ("Sirenler çaldı, ilk hamlen?", [("Herkesi toplayıp plan yaparım", "lider"), ("Yiyecek stoklarım", "kasif"), ("Haber kaynağını araştırırım", "bilimci"), ("Dolaba saklanırım", "sakli")]),
+   ("Silah olarak ne seçersin?", [("Beyzbol sopası", "lider"), ("Ne bulursam", "kasif"), ("Kimyasal karışım", "bilimci"), ("Hiçbiri, sessiz olurum", "sakli")]),
+   ("Grupta rolün?", [("Karar veren", "lider"), ("Keşfe çıkan", "kasif"), ("Çözüm üreten", "bilimci"), ("Moral veren (ama gizlenen)", "sakli")]),
+   ("Zombilerle ilgili en büyük korkun?", [("Yönetememek", "lider"), ("Yiyecek bitmesi", "kasif"), ("Salgının kaynağını bulamamak", "bilimci"), ("Beni bulmaları", "sakli")]),
+   ("Kıyamet sonrası hayalin?", [("Yeni bir toplum kurmak", "lider"), ("Dünyayı gezmek", "kasif"), ("Aşıyı bulmak", "bilimci"), ("Rahatça uyumak", "sakli")]),
+  ],
+  "results": {
+   "lider": ("Grup Lideri", "Herkes seni dinler, sen de kimse seni dinlemezse sinirlenirsin. Hayatta kalma şansın yüksek ama ilk gün çok yoruluyorsun."),
+   "kasif": ("Kâşif", "Hep yeni bir kapı açarsın. İlk gün en çok sen risk alırsın, ama hikâyesini en güzel sen anlatırsın."),
+   "bilimci": ("Bilim İnsanı", "Plan yapıyorsun, formül çıkarıyorsun. Zombiler sana öfkeli çünkü zaten anlamayacaklar."),
+   "sakli": ("Saklanma Ustası", "Sessiz ve sakin. Zombiler seni bulamıyor, bulduğunda da sıkılıp gidiyor."),
+  }},
+ "yemek": {
+  "title": "Hangi Anadolu Yemeğisin?",
+  "emoji": "🍲",
+  "desc": "Mantı gibi karmaşık mısın, menemen gibi hızlı mı?",
+  "questions": [
+   ("Hazırlanma süren?", [("Saatler (özenli)", "manti"), ("5 dakika", "menemen"), ("Orta, tatlı hazırlık", "baklava"), ("Hep birlikte, uzun", "pide")]),
+   ("Bir ortama girdiğinde?", [("Dikkatle bakarım", "manti"), ("Hemen konuşurum", "menemen"), ("Herkese tatlı davranırım", "baklava"), ("Herkesi toplarım", "pide")]),
+   ("En büyük özelliğin?", [("Detaycılık", "manti"), ("Hız", "menemen"), ("Yumuşaklık", "baklava"), ("Paylaşımcılık", "pide")]),
+   ("Stresli bir gün için?", [("Düzen kurarım", "manti"), ("Hemen çözerim", "menemen"), ("Biri bana tatlı getirsin", "baklava"), ("Dışarı çıkıp kalabalığa karışırım", "pide")]),
+   ("Arkadaşların seni nasıl tarif eder?", [("Titiz", "manti"), ("Pratik", "menemen"), ("Sevimli", "baklava"), ("Cömert", "pide")]),
+  ],
+  "results": {
+   "manti": ("Mantı", "Karmaşık ve zahmetlisin ama kimse bu emeği hak etmez... Hak eder tabii, çünkü sonuç harika."),
+   "menemen": ("Menemen", "Hızlı, pratik, her zaman işe yarar. 'Soğanlı mı soğansız mı' tartışmasının ortasındaki kişisin."),
+   "baklava": ("Baklava", "Tatlı, katmanlı, bayram havası. İnsanlar seni sever ama fazla yedirirsen bayılırlar."),
+   "pide": ("Pide", "Cömert, sıcak, paylaşımcı. Sofranın ortasında senin olduğun an herkes mutlu."),
+  }},
+ "tembel": {
+  "title": "Tembellik Seviyeni Ölç",
+  "emoji": "🛋️",
+  "desc": "Enerjik misin, koala mı? Gerçek seviye bu testte ortaya çıkıyor.",
+  "questions": [
+   ("Sabah alarmı çalınca?", [("Kalkarım", "enerjik"), ("5 dakika daha", "dengeli"), ("Üç alarm kurdum", "tembel"), ("Alarm mı? Hangi alarm?", "koala")]),
+   ("Hafta sonu planı?", [("Spor ve gezi", "enerjik"), ("Biraz dışarı, biraz ev", "dengeli"), ("Dizi", "tembel"), ("Yatak, battaniye, telefon", "koala")]),
+   ("Yemek yapma durumun?", [("Kendim yaparım", "enerjik"), ("Bazen yaparım", "dengeli"), ("Sipariş verirsem iyi", "tembel"), ("Yemek yok, uyku var", "koala")]),
+   ("Spor?", [("Her gün", "enerjik"), ("Haftada birkaç gün", "dengeli"), ("Yarın başlarım", "tembel"), ("Spor = başka bir dil", "koala")]),
+   ("Telefon açma durumun?", [("Hemen açarım", "enerjik"), ("Uygun olunca", "dengeli"), ("Mesaj atsınlar", "tembel"), ("Ses kapalı", "koala")]),
+  ],
+  "results": {
+   "enerjik": ("Enerji Küpü", "Durmak bilmiyorsun. Çevrendekiler seni izlerken yoruluyor."),
+   "dengeli": ("Dengeli Tembel", "Ne fazla çalışır ne de fazla dinlenirsin. Hayatın ortasında huzurlusun."),
+   "tembel": ("Profesyonel Tembel", "Konforunu bilirsin ve ondan vazgeçmezsin. Yatak seni çok sever."),
+   "koala": ("Koala", "Günde 20 saat uyku, kalan zamanda dinlenme. Hayat felsefen: 'Yarın da bir gün.'"),
+  }},
+ "ofis": {
+  "title": "Hangi Ofis Eşyasısın?",
+  "emoji": "📎",
+  "desc": "Zımba mı, kahve makinesi mi, yoksa o bozuk yazıcı mı?",
+  "questions": [
+   ("İş yerindeki rolün?", [("Herkesi bir arada tutan", "zimba"), ("Herkesin enerjisi", "kahve"), ("Beklenmedik anlarda ortaya çıkan", "yazici"), ("Sessizce işleyen", "ekran")]),
+   ("En iyi özelliğin?", [("Bağlayıcılık", "zimba"), ("Sıcaklık", "kahve"), ("Sürpriz", "yazici"), ("Güvenilirlik", "ekran")]),
+   ("En kötü özelliğin?", [("Bazen sıkışırım", "zimba"), ("Yanıma yaklaşmak zor", "kahve"), ("Tam lazımken bozulurum", "yazici"), ("Gece uyumam", "ekran")]),
+   ("Toplantılarda?", [("Notları birleştiririm", "zimba"), ("Herkese kahve getiririm", "kahve"), ("Tam sunum anında hata veririm", "yazici"), ("Sessizce izlerim", "ekran")]),
+   ("Çalışma arkadaşların seni ne kadar sever?", [("Çok, birleştiriyorum", "zimba"), ("Sabahları bayılırlar", "kahve"), ("Karışık duygular", "yazici"), ("Fark edilmem ama gerekliyim", "ekran")]),
+  ],
+  "results": {
+   "zimba": ("Zımba", "Dağınık kağıtları bir araya getirirsin. Takımın görünmez yapıştırıcısısın."),
+   "kahve": ("Kahve Makinesi", "Sabah enerjisinin kaynağı sensin. Herkes seni özler, tabii çalışırken."),
+   "yazici": ("Bozuk Yazıcı", "Tam lazım olduğunda 'kağıt sıkıştı' dersin. İnsanlar senden korkar ama seni de merak eder."),
+   "ekran": ("İkinci Ekran", "Sessiz, büyük, işe yarar. Seni kullanmayanlar ne kaçırdıklarını bilmiyor."),
+  }},
+})
+
+GRADS = {
+ "padisah": ("#f6a623", "#ff5c7a"), "cay": ("#10b981", "#4c8dff"), "toplanti": ("#4c8dff", "#a56bff"), "sehir": ("#ff5c7a", "#a56bff"),
+ "zombi": ("#34d399", "#065f46"), "yemek": ("#fb923c", "#ef4444"), "tembel": ("#a56bff", "#4c8dff"), "ofis": ("#f59e0b", "#ec4899"),
+}
+for _k, _g in GRADS.items():
+    TESTS[_k]["grad"] = _g
