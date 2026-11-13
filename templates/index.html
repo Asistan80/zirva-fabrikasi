@@ -27,6 +27,8 @@
   <div class="grid">
     {% if S.mazeret_on %}<a class="tile" style="--g1:#a56bff;--g2:#ff5c7a" href="/mazeret"><span class="em">🛠️</span><h3>Mazeret Fabrikası</h3><p>Kime, ne için, hangi tonda? Yapay zekâ üretir.</p><span class="chip">Yapay zekâlı</span></a>{% endif %}
     <a class="tile" style="--g1:#4c8dff;--g2:#a56bff" href="/testler"><span class="em">🧪</span><h3>Saçma Testler</h3><p>{{ tests|length }} test, sonuç kartı paylaşılabilir.</p><span class="chip">{{ tests|length }} test</span></a>
+    {% if S.koy_on %}<a class="tile" style="--g1:#22c1c3;--g2:#fdbb2d" href="/koy"><span class="em">🏘️</span><h3>Sisli Pınar Köyü</h3><p>Yapay zekâlı 3D köy: sisi dağıt, pınarı uyandır.</p><span class="chip">3D oyun</span></a>{% endif %}
+    {% if S.bulmaca_on %}<a class="tile" style="--g1:#10b981;--g2:#4c8dff" href="/bulmaca"><span class="em">🧩</span><h3>Günlük Bulmaca</h3><p>Her gün 6 yeni bulmaca. Seri yap, rozet topla.</p><span class="chip">6 oyun</span></a>{% endif %}
     {% if S.burc_on %}<a class="tile" style="--g1:#7c3aed;--g2:#4c8dff" href="/burc"><span class="em">🔮</span><h3>Burç Parodisi</h3><p>Her gün yenilenen, tamamen uydurma yorum.</p><span class="chip">Günlük</span></a>{% endif %}
     {% if S.roast_on %}<a class="tile" style="--g1:#ff5c7a;--g2:#f59e0b" href="/kizartma"><span class="em">🔥</span><h3>Kızartma Odası</h3><p>Bir şey yaz, dostça kızartılsın. 3 seviye.</p><span class="chip">Yapay zekâlı</span></a>{% endif %}
   </div>

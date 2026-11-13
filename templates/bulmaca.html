@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Günlük Bulmaca · {{ name }}{% endblock %}
+{% block desc %}Her gün yeni kelime, kod, sayı ve hafıza bulmacaları. Seri yap, seviye atla, rozet topla.{% endblock %}
+{% block head %}<link rel="stylesheet" href="/static/puzzles.css">{% endblock %}
+{% block content %}
+<section class="hero" style="padding-bottom:10px">
+  <div class="floaties"><span>🔤</span><span>🧮</span><span>🃏</span><span>🎯</span></div>
+  <h1 style="font-size:clamp(2.1rem,7vw,3.6rem)">🧩 Günlük Bulmaca</h1>
+  <p class="sub">Her gün 6 yeni bulmaca. Seri yap, seviye atla, rozet topla.</p>
+  <p class="muted small">Yeni bulmacalara kalan süre: <b id="hCd">--:--:--</b></p>
+</section>
+
+<div class="hub-stats">
+  <div class="glass hub-stat"><span class="muted small">Günlük seri</span><b><span class="flame">🔥</span> <span id="hStreak">0</span></b><span class="muted small">gün üst üste</span></div>
+  <div class="glass hub-stat"><span class="muted small">Seviye</span><b id="hLevel">Çaylak</b><div class="xpbar"><i id="hBar"></i></div><span class="muted small"><span id="hXp">0</span> XP · <span id="hNext"></span></span></div>
+  <div class="glass hub-stat"><span class="muted small">Bugün</span><b id="hToday">0/{{ games|length }}</b><div class="xpbar"><i id="hTodayBar"></i></div><span class="muted small">tamamlanan bulmaca</span></div>
+</div>
+
+<section class="block">
+  <h2 class="sec">🎮 Bulmacalar</h2>
+  <div class="grid">
+    {% for slug, g in games.items() %}
+    <a class="tile rv" data-game="{{ slug }}" style="--g1:{{ g.grad[0] }};--g2:{{ g.grad[1] }}" href="/bulmaca/{{ slug }}">
+      <span class="done-mark">✓</span><span class="em">{{ g.emoji }}</span><h3>{{ g.title }}</h3><p>{{ g.desc }}</p><span class="gs"></span><span class="chip">Günlük + sınırsız pratik</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="block rv">
+  <h2 class="sec">📅 Son 14 gün</h2>
+  <div class="glass feature"><div class="cal" id="cal"></div><p class="muted small" style="margin-top:10px">Renk koyulaştıkça o gün daha çok bulmaca çözmüşsün demek. İlerlemen bu tarayıcıda saklanır.</p></div>
+</section>
+
+<section class="block rv">
+  <h2 class="sec">🏅 Rozetler</h2>
+  <div class="badges" id="badges"></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/puzzles.js"></script><script>window.PZ_META={{ meta|tojson }};PZ.initHub();</script>{% endblock %}

@@ -3,8 +3,9 @@ from collections import defaultdict
 import requests
 from flask import (Flask, render_template, request, jsonify, abort, session, redirect,
                    url_for, flash, Response)
-import store, content
+import store, content, koydata
 from testdata import TESTS
+from puzzledata import GAMES
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(16)
@@ -74,6 +75,37 @@ def kizartma():
 def burc():
     if not store.get_settings()["burc_on"]: abort(404)
     return render_template("burc.html", signs=content.SIGNS, today=datetime.date.today().strftime("%d.%m.%Y"))
+
+def visible_games():
+    s = store.get_settings()
+    if not s["bulmaca_on"]: return {}
+    hidden = set(s.get("hidden_games", []))
+    return {k: v for k, v in GAMES.items() if k not in hidden}
+
+def games_meta():
+    return {k: dict(title=v["title"], emoji=v["emoji"]) for k, v in GAMES.items()}
+
+@app.route("/bulmaca")
+def bulmaca():
+    g = visible_games()
+    if not g: abort(404)
+    return render_template("bulmaca.html", games=g, meta=games_meta())
+
+@app.route("/bulmaca/<slug>")
+def bulmaca_game(slug):
+    g = visible_games()
+    if slug not in g: abort(404)
+    return render_template("puzzle.html", g=g[slug], slug=slug, games=g, meta=games_meta())
+
+@app.route("/api/bulmaca/<slug>/done", methods=["POST"])
+def api_bulmaca_done(slug):
+    if slug not in GAMES: abort(404)
+    d = request.get_json(silent=True) or {}
+    mode = "daily" if d.get("mode") == "daily" else "practice"
+    store.bump("puzzle", slug, "done")
+    store.bump("puzzle", slug, mode)
+    if d.get("win"): store.bump("puzzle", slug, "win")
+    return jsonify(ok=True)
 
 @app.route("/testler")
 def testler():
@@ -190,6 +222,41 @@ def api_daily():
     return jsonify(ton=ton, text=text)
 
 # ---------------- SEO ----------------
+
+# ---------------- Sisli Pınar Köyü (3D oyun) ----------------
+@app.route("/koy")
+def koy():
+    s = store.get_settings()
+    if not s.get("koy_on", True): abort(404)
+    return render_template("koy.html", ai=bool(API_KEY and s["ai_enabled"] and s.get("koy_ai", True)))
+
+@app.route("/api/koy/chat", methods=["POST"])
+def api_koy_chat():
+    s = store.get_settings()
+    d = request.get_json(silent=True) or {}
+    npc = str(d.get("npc", "")); text = str(d.get("text", "")).strip()[:160]
+    if npc not in koydata.PERSONAS or not text:
+        return jsonify(mode="fallback", note="")
+    if not (API_KEY and s["ai_enabled"] and s.get("koy_ai", True) and s.get("koy_on", True)):
+        return jsonify(mode="fallback", note="")
+    ok, left = check_limit("koy:" + client_ip(), int(s.get("koy_limit", 40)))
+    if not ok:
+        return jsonify(mode="fallback", note="Bugünkü yapay zekâ sohbet hakkın doldu; hazır diyaloglar kullanılıyor.")
+    try:
+        out = koydata.clean_reply(call_claude(koydata.build_prompt(npc, text, d.get("ctx")), 160))
+        if not out: raise ValueError("bos")
+        store.bump("koy", "chats")
+        return jsonify(mode="ai", text=out, left=left)
+    except Exception:
+        return jsonify(mode="fallback", note="Yapay zekâya ulaşılamadı; hazır diyaloglar kullanılıyor.")
+
+@app.route("/api/koy/event", methods=["POST"])
+def api_koy_event():
+    d = request.get_json(silent=True) or {}
+    if d.get("type") == "finish": store.bump("koy", "finished")
+    elif d.get("type") == "start": store.bump("koy", "started")
+    return jsonify(ok=True)
+
 @app.route("/robots.txt")
 def robots():
     return Response(f"User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: {request.url_root}sitemap.xml\n", mimetype="text/plain")
@@ -197,7 +264,7 @@ def robots():
 @app.route("/sitemap.xml")
 def sitemap():
     base = request.url_root.rstrip("/")
-    urls = ["/", "/mazeret", "/kizartma", "/burc", "/testler"] + [f"/test/{k}" for k in visible_tests()]
+    urls = ["/", "/mazeret", "/kizartma", "/burc", "/testler", "/koy"] + (["/bulmaca"] + [f"/bulmaca/{k}" for k in visible_games()] if visible_games() else []) + [f"/test/{k}" for k in visible_tests()]
     xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + \
           "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls) + "</urlset>"
     return Response(xml, mimetype="application/xml")
@@ -264,7 +331,11 @@ def admin():
         top = sorted(x.get("results", {}).items(), key=lambda kv: -kv[1])
         tstats.append(dict(slug=k, title=t["title"], emoji=t["emoji"], done=x.get("done", 0),
                            top=[(t["results"][a][0], b) for a, b in top[:4] if a in t["results"]], hidden=k in s["hidden_tests"]))
-    return render_template("admin.html", st=st, s=s, chart=chart, tstats=tstats, tonlar=content.TONLAR,
+    pstats = []
+    for k, g in GAMES.items():
+        x = st["puzzle"].get(k, {})
+        pstats.append(dict(slug=k, title=g["title"], emoji=g["emoji"], done=x.get("done", 0), win=x.get("win", 0), daily=x.get("daily", 0), practice=x.get("practice", 0), hidden=k in s["hidden_games"]))
+    return render_template("admin.html", st=st, s=s, chart=chart, tstats=tstats, pstats=pstats, tonlar=content.TONLAR,
                            api_on=bool(API_KEY), model=MODEL, csrf=session["csrf"], tests=TESTS)
 
 @app.route("/admin/settings", methods=["POST"])
@@ -282,6 +353,7 @@ def admin_settings():
         "announcement_on": f.get("announcement_on") == "on",
         "ai_enabled": f.get("ai_enabled") == "on", "daily_limit": lim,
         "mazeret_on": f.get("mazeret_on") == "on", "roast_on": f.get("roast_on") == "on", "burc_on": f.get("burc_on") == "on",
+        "bulmaca_on": f.get("bulmaca_on") == "on", "koy_on": f.get("koy_on") == "on", "koy_ai": f.get("koy_ai") == "on", "koy_limit": max(1, min(500, int(f.get("koy_limit", 40) or 40))), "hidden_games": [k for k in GAMES if f.get(f"game_{k}") != "on"],
         "hidden_tests": hidden,
     }
     store.save_settings(new)

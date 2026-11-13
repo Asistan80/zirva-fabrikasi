@@ -11,6 +11,7 @@
 <meta name="theme-color" content="#a56bff">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
 <link rel="stylesheet" href="/static/style.css">
+{% block head %}{% endblock %}
 <script>try{var t=JSON.parse(localStorage.getItem('zf_theme'));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
@@ -22,6 +23,8 @@
   <nav class="links" id="links">
     {% if S.mazeret_on %}<a href="/mazeret" class="{{ 'on' if request.path=='/mazeret' }}">🛠️ Mazeret</a>{% endif %}
     <a href="/testler" class="{{ 'on' if request.path.startswith('/test') }}">🧪 Testler</a>
+    {% if S.bulmaca_on %}<a href="/bulmaca" class="{{ 'on' if request.path.startswith('/bulmaca') }}">🧩 Bulmaca</a>{% endif %}
+    {% if S.koy_on %}<a href="/koy" class="{{ 'on' if request.path=='/koy' }}">🏘️ Köy</a>{% endif %}
     {% if S.burc_on %}<a href="/burc" class="{{ 'on' if request.path=='/burc' }}">🔮 Burç</a>{% endif %}
     {% if S.roast_on %}<a href="/kizartma" class="{{ 'on' if request.path=='/kizartma' }}">🔥 Kızartma</a>{% endif %}
   </nav>
@@ -30,7 +33,7 @@
 <main class="wrap">{% block content %}{% endblock %}</main>
 <footer>
   <div class="warn">⚠️ Bu sitedeki her şey <b>mizah ve eğlence amaçlıdır</b>. Testlerin, burçların ve kızartmaların bilimsel hiçbir dayanağı yoktur; mazeretleri gerçek hayatta kullanmanızı önermeyiz. Yapay zekâ çıktıları hatalı olabilir.</div>
-  <div><a href="/mazeret">Mazeret</a><a href="/testler">Testler</a><a href="/burc">Burç</a><a href="/kizartma">Kızartma</a></div>
+  <div><a href="/mazeret">Mazeret</a><a href="/testler">Testler</a><a href="/bulmaca">Bulmaca</a><a href="/koy">Köy</a><a href="/burc">Burç</a><a href="/kizartma">Kızartma</a></div>
   <p>© {{ year }} {{ name }}</p>
 </footer>
 <div id="toast" role="status"></div>

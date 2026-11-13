@@ -17,6 +17,7 @@
     <div class="stat"><b>{{ st.roast.total }}</b><span>kızartma (🤖 {{ st.roast.ai }} / 🛠️ {{ st.roast.offline }})</span></div>
     <div class="stat"><b>{{ st.burc.total }}</b><span>burç okuma</span></div>
     <div class="stat"><b>{{ tstats|sum(attribute='done') }}</b><span>test çözüldü</span></div>
+    <div class="stat"><b>{{ pstats|sum(attribute='done') }}</b><span>bulmaca oynandı</span></div>
   </div>
   <h3 style="margin:22px 0 0">Son 14 gün</h3>
   {% if chart %}
@@ -42,6 +43,12 @@
     <div class="switch"><span>🛠️ Mazeret Fabrikası açık</span><input type="checkbox" name="mazeret_on" {{ 'checked' if s.mazeret_on }}></div>
     <div class="switch"><span>🔥 Kızartma Odası açık</span><input type="checkbox" name="roast_on" {{ 'checked' if s.roast_on }}></div>
     <div class="switch"><span>🔮 Burç Parodisi açık</span><input type="checkbox" name="burc_on" {{ 'checked' if s.burc_on }}></div>
+    <div class="switch"><span>🧩 Günlük Bulmaca açık</span><input type="checkbox" name="bulmaca_on" {{ 'checked' if s.bulmaca_on }}></div>
+    <div class="switch"><span>🏘️ Sisli Pınar Köyü (3D oyun) açık</span><input type="checkbox" name="koy_on" {{ 'checked' if s.koy_on }}></div>
+    <div class="switch"><span>🤖 Köyde yapay zekâ sohbeti</span><input type="checkbox" name="koy_ai" {{ 'checked' if s.koy_ai }}></div>
+    <label>Köy: kişi başı günlük yapay zekâ sohbet hakkı</label><input type="number" name="koy_limit" min="1" max="500" value="{{ s.koy_limit }}">
+    <h3 style="margin:18px 0 0">Bulmacalar (işaretliler görünür)</h3>
+    {% for p in pstats %}<div class="switch"><span>{{ p.emoji }} {{ p.title }} <span class="muted small">· {{ p.done }} oyun</span></span><input type="checkbox" name="game_{{ p.slug }}" {{ '' if p.hidden else 'checked' }}></div>{% endfor %}
     <h3 style="margin:18px 0 0">Testler (işaretliler görünür)</h3>
     {% for ts in tstats %}<div class="switch"><span>{{ ts.emoji }} {{ ts.title }} <span class="muted small">· {{ ts.done }} çözüm</span></span><input type="checkbox" name="show_{{ ts.slug }}" {{ '' if ts.hidden else 'checked' }}></div>{% endfor %}
     <div class="row" style="justify-content:flex-start"><button class="btn">Kaydet</button></div>
@@ -61,6 +68,10 @@
 </section>
 </div>
 
+<section class="glass panel">
+  <h2 style="margin:0 0 10px">🧩 Bulmaca istatistikleri</h2>
+  <table><tr><th>Oyun</th><th>Toplam</th><th>Günlük</th><th>Pratik</th><th>Kazanma</th></tr>{% for p in pstats %}<tr><td>{{ p.emoji }} {{ p.title }}</td><td>{{ p.done }}</td><td>{{ p.daily }}</td><td>{{ p.practice }}</td><td>{{ (p.win*100//p.done) if p.done else 0 }}%</td></tr>{% endfor %}</table>
+</section>
 <section class="glass panel">
   <h2 style="margin:0 0 10px">🧪 Test sonuç dağılımı</h2>
   <table>{% for ts in tstats %}<tr><td>{{ ts.emoji }} {{ ts.title }}</td><td>{{ ts.done }} çözüm</td><td class="muted">{% for n, c in ts.top %}{{ n }}: {{ c }}{{ ' · ' if not loop.last }}{% endfor %}</td></tr>{% endfor %}</table>

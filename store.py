@@ -15,6 +15,11 @@ DEFAULT_SETTINGS = {
     "mazeret_on": True,
     "roast_on": True,
     "burc_on": True,
+    "bulmaca_on": True,
+    "koy_on": True,
+    "koy_ai": True,
+    "koy_limit": 40,
+    "hidden_games": [],
     "hidden_tests": [],
     "extra_excuses": {"inandirici": [], "absurt": [], "dramatik": [], "bilimsel": []},
     "extra_roasts": [],
@@ -65,6 +70,7 @@ def get_stats():
         st.setdefault("roast", {"total": 0, "ai": 0, "offline": 0})
         st.setdefault("burc", {"total": 0})
         st.setdefault("tests", {})
+        st.setdefault("puzzle", {})
         st.setdefault("daily", {})
         st.setdefault("since", datetime.date.today().isoformat())
         return st
@@ -79,7 +85,7 @@ def bump(*path, by=1):
         d[path[-1]] = d.get(path[-1], 0) + by
         day = datetime.date.today().isoformat()
         dd = st["daily"].setdefault(day, {"mazeret": 0, "roast": 0, "burc": 0, "test": 0})
-        key = path[0] if path[0] in ("mazeret", "roast", "burc") else ("test" if path[0] == "tests" and path[-1] == "done" else None)
+        key = path[0] if path[0] in ("mazeret", "roast", "burc") else ("test" if path[0] == "tests" and path[-1] == "done" else ("puzzle" if path[0] == "puzzle" and path[-1] == "done" else None))
         if key and path[-1] in ("total", "done"):
             dd[key] = dd.get(key, 0) + by
         if len(st["daily"]) > 60:

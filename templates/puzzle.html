@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ g.title }} · Günlük Bulmaca · {{ name }}{% endblock %}
+{% block desc %}{{ g.desc }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="/static/puzzles.css">{% endblock %}
+{% block content %}
+<div class="pz-head" style="--g1:{{ g.grad[0] }};--g2:{{ g.grad[1] }}" data-em="{{ g.emoji }}">
+  <h1>{{ g.emoji }} {{ g.title }}</h1>
+  <p>{{ g.desc }}</p>
+  <div class="pz-bar">
+    <div class="seg2"><button data-mode="daily" class="on">📅 Günlük</button><button data-mode="practice">🎲 Pratik</button></div>
+    <button class="icon-btn" id="snd" aria-label="Ses">🔊</button>
+    <a class="icon-btn" href="/bulmaca" style="text-decoration:none">🏠</a>
+  </div>
+  <details class="rules"><summary>Nasıl oynanır?</summary><ul>{% for r in g.rules %}<li>{{ r }}</li>{% endfor %}</ul></details>
+</div>
+<section class="glass panel" style="margin-top:16px">
+  <div id="opts"></div>
+  <div id="game" class="pz-stage"></div>
+  <div id="result" hidden></div>
+</section>
+<section class="block">
+  <h2 class="sec">Diğer bulmacalar</h2>
+  <div class="grid">
+    {% for k, o in games.items() if k != slug %}<a class="tile" data-game="{{ k }}" style="--g1:{{ o.grad[0] }};--g2:{{ o.grad[1] }}" href="/bulmaca/{{ k }}"><span class="done-mark">✓</span><span class="em">{{ o.emoji }}</span><h3>{{ o.title }}</h3><p>{{ o.desc }}</p></a>{% endfor %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+{% if slug == 'kelime' %}<script src="/static/words.js"></script>{% endif %}
+<script src="/static/puzzles.js"></script>
+<script>window.PZ_META={{ meta|tojson }};PZ.initPuzzle({{ slug|tojson }});
+(function(){try{var p=JSON.parse(localStorage.getItem('zf_pz2')||'{}'),k=PZ.todayKey(),d=(p.days||{})[k]||{};document.querySelectorAll('[data-game]').forEach(function(a){if(d[a.dataset.game]&&d[a.dataset.game].done)a.classList.add('solved')})}catch(e){}})();</script>
+{% endblock %}

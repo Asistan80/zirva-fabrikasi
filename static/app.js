@@ -47,7 +47,7 @@ function countUp(el) {
 }
 /* görünür olunca animasyon */
 function initReveal() {
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); $$("[data-n]", e.target).forEach(countUp); if (e.target.dataset.n) countUp(e.target); io.unobserve(e.target); } }), { threshold: .15 });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); const tg = e.target; setTimeout(() => tg.classList.remove("rv", "in"), 900); $$("[data-n]", e.target).forEach(countUp); if (e.target.dataset.n) countUp(e.target); io.unobserve(e.target); } }), { threshold: .15 });
   $$(".rv").forEach(el => io.observe(el));
 }
 function initTilt() {
