@@ -1,0 +1,101 @@
+{
+ "mazeret": {
+  "total": 0,
+  "ai": 0,
+  "offline": 0
+ },
+ "roast": {
+  "total": 0,
+  "ai": 0,
+  "offline": 0
+ },
+ "burc": {
+  "total": 0
+ },
+ "tests": {},
+ "puzzle": {
+  "kelimeavi": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "passaparola": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "adamasmaca": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "anagram": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "baglanti": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "dogruyanlis": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "mayin": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "g2048": {
+   "done": 2,
+   "daily": 2
+  },
+  "sudoku": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "isiklar": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "dizi": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "carpim": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  },
+  "simon": {
+   "done": 2,
+   "daily": 2,
+   "win": 2
+  }
+ },
+ "daily": {
+  "2026-11-13": {
+   "mazeret": 0,
+   "roast": 0,
+   "burc": 0,
+   "test": 0
+  },
+  "2026-11-14": {
+   "mazeret": 0,
+   "roast": 0,
+   "burc": 0,
+   "test": 0,
+   "puzzle": 27
+  }
+ },
+ "since": "2026-11-13",
+ "koy": {
+  "finished": 1
+ }
+}

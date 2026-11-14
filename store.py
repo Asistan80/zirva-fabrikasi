@@ -20,6 +20,7 @@ DEFAULT_SETTINGS = {
     "koy_ai": True,
     "koy_limit": 40,
     "hidden_games": [],
+    "featured_game": "auto",
     "hidden_tests": [],
     "extra_excuses": {"inandirici": [], "absurt": [], "dramatik": [], "bilimsel": []},
     "extra_roasts": [],

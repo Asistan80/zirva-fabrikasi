@@ -17,6 +17,10 @@
   <div class="glass hub-stat"><span class="muted small">Bugün</span><b id="hToday">0/{{ games|length }}</b><div class="xpbar"><i id="hTodayBar"></i></div><span class="muted small">tamamlanan bulmaca</span></div>
 </div>
 
+{% if featured and games[featured] %}{% set fg = games[featured] %}
+<a class="glass feature fg-banner rv" id="fgBanner" data-game="{{ featured }}" href="/bulmaca/{{ featured }}" style="--g1:{{ fg.grad[0] }};--g2:{{ fg.grad[1] }}">
+  <span class="fg-em">{{ fg.emoji }}</span><div><span class="chip">⭐ Günün oyunu · +%50 XP</span><h3>{{ fg.title }}</h3><p>{{ fg.desc }}</p></div><span class="fg-go">Oyna →</span>
+</a>{% endif %}
 <section class="block">
   <h2 class="sec">🎮 Bulmacalar <span class="muted small">({{ games|length }} oyun)</span></h2>
   <div class="cat-bar" id="catBar">{% for k, n in cats %}<button class="cat-btn{{ ' on' if k=='hepsi' }}" data-cat="{{ k }}">{{ n }}</button>{% endfor %}</div>
@@ -39,4 +43,4 @@
   <div class="badges" id="badges"></div>
 </section>
 {% endblock %}
-{% block scripts %}<script src="/static/puzzles.js"></script><script>window.PZ_META={{ meta|tojson }};PZ.initHub();document.querySelectorAll('.cat-btn').forEach(function(b){b.onclick=function(){document.querySelectorAll('.cat-btn').forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('#gameGrid .tile').forEach(function(t){t.style.display=(b.dataset.cat==='hepsi'||t.dataset.cat===b.dataset.cat)?'':'none'})}});</script>{% endblock %}
+{% block scripts %}<script src="/static/puzzles.js"></script><script>window.PZ_META={{ meta|tojson }};window.PZ_FEATURED={{ featured|tojson }};PZ.initHub();document.querySelectorAll('.cat-btn').forEach(function(b){b.onclick=function(){document.querySelectorAll('.cat-btn').forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('#gameGrid .tile').forEach(function(t){t.style.display=(b.dataset.cat==='hepsi'||t.dataset.cat===b.dataset.cat)?'':'none'})}});</script>{% endblock %}

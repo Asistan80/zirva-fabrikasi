@@ -36,3 +36,8 @@ Start: gunicorn app:app --workers 1 --threads 4
 **Link önizleme:** `base.html` Open Graph + Twitter Card etiketleri basar. Görseller `static/og/*.jpg` (1200x630), `python3 tools/make_og.py` ile üretilir (Playwright gerekir). Sayfa şablonları `{% block ogimg %}` ile kendi kartını seçer. Render arkasında doğru https adresi için ProxyFix eklendi.
 
 Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
+
+### v6.1
+- **Günün oyunu:** hub'da öne çıkan banner, bu oyunda günlük ilk çözüm +%50 XP. Otomatik seçilir (İstanbul tarihine göre), admin panelinden sabitlenebilir (`featured_game`).
+- **Meydan okuma linki:** sonucu paylaşınca link `?m=...` ile gider; arkadaşın sayfayı açınca "aynı bulmaca, sen de dene" bandı görür (metin güvenli şekilde gösterilir).
+- Admin panelinde oyun açıp kapama zaten tüm 19 oyunu kapsar.

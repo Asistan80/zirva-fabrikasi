@@ -67,16 +67,16 @@ function checkBadges(p) {
   return nu;
 }
 function record(slug, mode, win, stars, extra) {
-  const p = getP(), key = todayKey(); let gain = 0;
+  const p = getP(), key = todayKey(); let gain = 0, bonus = false;
   if (mode === "daily") {
     const d = p.days[key] = p.days[key] || {};
-    if (!(d[slug] && d[slug].done)) { gain = win ? 20 + stars * 6 : 5; d[slug] = Object.assign({ done: true, win, stars }, extra || {}); }
+    if (!(d[slug] && d[slug].done)) { gain = win ? 20 + stars * 6 : 5; if (window.PZ_FEATURED === slug) { gain = Math.round(gain * 1.5); bonus = true; } d[slug] = Object.assign({ done: true, win, stars }, extra || {}); }
   } else { p.practice++; gain = win ? 4 : 1; }
   const before = levelInfo(p.xp).i; p.xp += gain;
   const nu = checkBadges(p); saveP(p);
   const lv = levelInfo(p.xp);
   fetch("/api/bulmaca/" + slug + "/done", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ win, stars, mode }) }).catch(() => {});
-  return { gain, newBadges: nu, streak: streakOf(p), level: lv, leveledUp: lv.i > before, xp: p.xp };
+  return { gain, bonus, newBadges: nu, streak: streakOf(p), level: lv, leveledUp: lv.i > before, xp: p.xp };
 }
 function untilMidnight() {
   const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).formatToParts(new Date());
@@ -88,6 +88,7 @@ function untilMidnight() {
 /* ---------- sonuç paneli ---------- */
 function showResult(ctx, o) {
   // o: {win, stars, title, text, shareLines, extra}
+  if (o.share) { const first = o.share.split("\n")[0].replace("🏭 Zırva Fabrikası · ", ""); o.share = o.share.replace(/(\S+\/bulmaca\/\S+)$/, u => u.split("?")[0] + "?m=" + encodeURIComponent(first.slice(0, 80))); }
   const r = record(ctx.slug, ctx.mode, o.win, o.stars, Object.assign({ share: o.share }, o.extra));
   const box = $("#result"); box.hidden = false; box.innerHTML = "";
   box.className = "out pz-result";
@@ -404,7 +405,12 @@ function start() {
   const ctx = { slug, mode: CUR.mode, key, rnd: rng(seed), opts: o }; CUR.ctx = ctx; window.__pzctx = ctx;
   root.className = "pz-stage g-" + slug; (GAMES[slug] || (window.PZX || {})[slug])(root, ctx, window.PZ_API);
 }
+function challengeBanner() {
+  try { const m = new URLSearchParams(location.search).get("m"); if (!m) return; const st = $("#stage") || $(".pz-stage"); if (!st) return;
+    const b = el("div", "glass chal"); b.append(el("b", "", "🤝 Meydan okuma! ")); b.append(document.createTextNode(m.slice(0, 80) + " — aynı bulmaca, sen de dene!")); st.parentNode.insertBefore(b, st); } catch (e) {}
+}
 function initPuzzle(slug) {
+  challengeBanner();
   CUR.slug = slug; CUR.mode = "daily";
   $$("[data-mode]").forEach(b => b.onclick = () => switchMode(b.dataset.mode));
   const snd = $("#snd"); if (snd) { const set = () => snd.textContent = soundOn() ? "🔊" : "🔇"; set(); snd.onclick = () => { LS.set("zf_sound", !soundOn()); set(); sfx("good"); }; }

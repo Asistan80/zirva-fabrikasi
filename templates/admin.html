@@ -48,6 +48,7 @@
     <div class="switch"><span>🤖 Köyde yapay zekâ sohbeti</span><input type="checkbox" name="koy_ai" {{ 'checked' if s.koy_ai }}></div>
     <label>Köy: kişi başı günlük yapay zekâ sohbet hakkı</label><input type="number" name="koy_limit" min="1" max="500" value="{{ s.koy_limit }}">
     <h3 style="margin:18px 0 0">Bulmacalar (işaretliler görünür)</h3>
+    <div class="switch"><span>⭐ Günün oyunu (bonus XP)</span><select name="featured_game"><option value="auto" {{ 'selected' if s.featured_game=='auto' }}>Otomatik (her gün değişir)</option>{% for p in pstats %}<option value="{{ p.slug }}" {{ 'selected' if s.featured_game==p.slug }}>{{ p.emoji }} {{ p.title }}</option>{% endfor %}</select></div>
     {% for p in pstats %}<div class="switch"><span>{{ p.emoji }} {{ p.title }} <span class="muted small">· {{ p.done }} oyun</span></span><input type="checkbox" name="game_{{ p.slug }}" {{ '' if p.hidden else 'checked' }}></div>{% endfor %}
     <h3 style="margin:18px 0 0">Testler (işaretliler görünür)</h3>
     {% for ts in tstats %}<div class="switch"><span>{{ ts.emoji }} {{ ts.title }} <span class="muted small">· {{ ts.done }} çözüm</span></span><input type="checkbox" name="show_{{ ts.slug }}" {{ '' if ts.hidden else 'checked' }}></div>{% endfor %}

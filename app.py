@@ -84,6 +84,16 @@ def visible_games():
     hidden = set(s.get("hidden_games", []))
     return {k: v for k, v in GAMES.items() if k not in hidden}
 
+def featured_slug():
+    """Günün oyunu: admin seçtiyse o, yoksa İstanbul tarihine göre sabit rastgele."""
+    g = list(visible_games().keys())
+    if not g: return None
+    f = store.get_settings().get("featured_game", "auto")
+    if f in g: return f
+    from zoneinfo import ZoneInfo
+    d = datetime.datetime.now(ZoneInfo("Europe/Istanbul")).date()
+    return g[(d.year * 400 + d.timetuple().tm_yday * 7) % len(g)]
+
 def games_meta():
     return {k: dict(title=v["title"], emoji=v["emoji"]) for k, v in GAMES.items()}
 
@@ -91,13 +101,13 @@ def games_meta():
 def bulmaca():
     g = visible_games()
     if not g: abort(404)
-    return render_template("bulmaca.html", games=g, meta=games_meta(), cats=CATS)
+    return render_template("bulmaca.html", games=g, meta=games_meta(), cats=CATS, featured=featured_slug())
 
 @app.route("/bulmaca/<slug>")
 def bulmaca_game(slug):
     g = visible_games()
     if slug not in g: abort(404)
-    return render_template("puzzle.html", g=g[slug], slug=slug, games=g, meta=games_meta())
+    return render_template("puzzle.html", g=g[slug], slug=slug, games=g, meta=games_meta(), featured=featured_slug())
 
 @app.route("/api/bulmaca/<slug>/done", methods=["POST"])
 def api_bulmaca_done(slug):
@@ -365,7 +375,7 @@ def admin_settings():
         "announcement_on": f.get("announcement_on") == "on",
         "ai_enabled": f.get("ai_enabled") == "on", "daily_limit": lim,
         "mazeret_on": f.get("mazeret_on") == "on", "roast_on": f.get("roast_on") == "on", "burc_on": f.get("burc_on") == "on",
-        "bulmaca_on": f.get("bulmaca_on") == "on", "koy_on": f.get("koy_on") == "on", "koy_ai": f.get("koy_ai") == "on", "koy_limit": max(1, min(500, int(f.get("koy_limit", 40) or 40))), "hidden_games": [k for k in GAMES if f.get(f"game_{k}") != "on"],
+        "bulmaca_on": f.get("bulmaca_on") == "on", "koy_on": f.get("koy_on") == "on", "koy_ai": f.get("koy_ai") == "on", "koy_limit": max(1, min(500, int(f.get("koy_limit", 40) or 40))), "featured_game": f.get("featured_game", "auto") if f.get("featured_game", "auto") in GAMES else "auto", "hidden_games": [k for k in GAMES if f.get(f"game_{k}") != "on"],
         "hidden_tests": hidden,
     }
     store.save_settings(new)
