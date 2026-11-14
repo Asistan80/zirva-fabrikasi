@@ -25,7 +25,9 @@ function sfx(kind) {
 }
 
 /* ---------- ilerleme: günler, XP, seri, rozet ---------- */
-const GAME_IDS = ["kelime", "kodkir", "hedef24", "kaydir", "hafiza", "emoji"];
+const GAME_IDS_OLD = ["kelime", "kodkir", "hedef24", "kaydir", "hafiza", "emoji"];
+const gameIds = () => window.PZ_META ? Object.keys(window.PZ_META) : GAME_IDS_OLD;
+const todayDone = p => gameIds().filter(g => p.days[todayKey()] && p.days[todayKey()][g] && p.days[todayKey()][g].done).length;
 const PZK = "zf_pz2";
 const getP = () => { const p = LS.get(PZK, null) || {}; p.days = p.days || {}; p.xp = p.xp || 0; p.badges = p.badges || []; p.practice = p.practice || 0; return p; };
 const saveP = p => LS.set(PZK, p);
@@ -48,7 +50,11 @@ const BADGES = [
   ["seri3", "🔥", "Isınma Turu", "3 gün üst üste oyna", p => streakOf(p) >= 3],
   ["seri7", "🚀", "Haftalık Ateş", "7 gün üst üste oyna", p => streakOf(p) >= 7],
   ["seri30", "👑", "Aylık Efsane", "30 gün üst üste oyna", p => streakOf(p) >= 30],
-  ["tam", "🏆", "Tam Set", "Bir günde 6 bulmacayı da bitir", p => GAME_IDS.every(g => p.days[todayKey()] && p.days[todayKey()][g] && p.days[todayKey()][g].done)],
+  ["cok", "🎨", "Çok Yönlü", "Bir günde 5 farklı bulmaca bitir", p => todayDone(p) >= 5],
+  ["tam", "🏆", "Tam Set", "Bir günde 10 bulmaca bitir", p => todayDone(p) >= 10],
+  ["hepsi", "🌟", "Zırva Şampiyonu", "Bir günde tüm bulmacaları bitir", p => todayDone(p) >= gameIds().length],
+  ["avci", "🔎", "Kelime Avcısı", "Kelime Avı'nı 2 dakikada bitir", p => Object.values(p.days).some(d => d.kelimeavi && d.kelimeavi.win && d.kelimeavi.secs <= 120)],
+  ["parola", "🎤", "Parola Ustası", "Passaparola'da 16+ doğru yap", p => Object.values(p.days).some(d => d.passaparola && d.passaparola.correct >= 16)],
   ["yildiz", "⭐", "Mükemmeliyetçi", "Bir bulmacadan 5 yıldız al", p => Object.values(p.days).some(d => Object.values(d).some(v => v && v.stars === 5))],
   ["kelime3", "🔤", "Kelime Avcısı", "Zırva Kelime'yi 3 denemede bil", p => Object.values(p.days).some(d => d.kelime && d.kelime.win && d.kelime.tries <= 3)],
   ["xp500", "💎", "Usta Zırva", "500 XP topla", p => p.xp >= 500],
@@ -85,7 +91,7 @@ function showResult(ctx, o) {
   const r = record(ctx.slug, ctx.mode, o.win, o.stars, Object.assign({ share: o.share }, o.extra));
   const box = $("#result"); box.hidden = false; box.innerHTML = "";
   box.className = "out pz-result";
-  const next = GAME_IDS.find(g => g !== ctx.slug && !(getP().days[todayKey()] || {})[g]);
+  const next = gameIds().find(g => g !== ctx.slug && !(getP().days[todayKey()] || {})[g]);
   const nextName = next && window.PZ_META ? window.PZ_META[next].title : null;
   box.innerHTML = `
     <div class="pz-emoji">${o.win ? "🎉" : "😅"}</div>
@@ -395,8 +401,8 @@ function start() {
     const nb = el("button", "btn sm ghost", "🔄 Yeni bulmaca"); nb.onclick = start; opts.appendChild(nb);
   }
   const seed = CUR.mode === "daily" ? hash(slug + ":" + key) : hash(slug + ":" + Math.random() + Date.now());
-  const ctx = { slug, mode: CUR.mode, key, rnd: rng(seed), opts: o }; CUR.ctx = ctx;
-  root.className = "pz-stage g-" + slug; GAMES[slug](root, ctx);
+  const ctx = { slug, mode: CUR.mode, key, rnd: rng(seed), opts: o }; CUR.ctx = ctx; window.__pzctx = ctx;
+  root.className = "pz-stage g-" + slug; (GAMES[slug] || (window.PZX || {})[slug])(root, ctx, window.PZ_API);
 }
 function initPuzzle(slug) {
   CUR.slug = slug; CUR.mode = "daily";
@@ -408,10 +414,10 @@ function initPuzzle(slug) {
 /* ---------- merkez sayfası ---------- */
 function initHub() {
   const p = getP(), key = todayKey(), day = p.days[key] || {}, lv = levelInfo(p.xp);
-  const doneN = GAME_IDS.filter(g => day[g] && day[g].done).length;
+  const doneN = gameIds().filter(g => day[g] && day[g].done).length;
   $("#hStreak").textContent = streakOf(p); $("#hXp").textContent = p.xp; $("#hLevel").textContent = lv.name;
   $("#hBar").style.width = lv.pct + "%"; $("#hNext").textContent = lv.next ? `${lv.next - p.xp} XP sonra: ${LEVELS[lv.i + 1][1]}` : "En yüksek seviyedesin! 👑";
-  $("#hToday").textContent = `${doneN}/${GAME_IDS.length}`; $("#hTodayBar").style.width = (doneN * 100 / GAME_IDS.length) + "%";
+  $("#hToday").textContent = `${doneN}/${gameIds().length}`; $("#hTodayBar").style.width = (doneN * 100 / gameIds().length) + "%";
   $$("[data-game]").forEach(t => { const d = day[t.dataset.game]; if (d && d.done) { t.classList.add("solved"); const s = $(".gs", t); if (s) s.textContent = "★".repeat(d.stars) + "☆".repeat(5 - d.stars); } });
   const bx = $("#badges"); bx.innerHTML = BADGES.map(b => `<div class="badge ${p.badges.includes(b[0]) ? "on" : ""}" title="${b[3]}"><span>${b[1]}</span><b>${b[2]}</b><small>${b[3]}</small></div>`).join("");
   const cd = $("#hCd"); const upd = () => cd.textContent = untilMidnight(); upd(); setInterval(upd, 1000);
@@ -420,5 +426,7 @@ function initHub() {
   for (let i = 13; i >= 0; i--) { const x = new Date(d); x.setUTCDate(x.getUTCDate() - i); const k = x.toISOString().slice(0, 10); const n = Object.values(p.days[k] || {}).filter(v => v && v.done).length; cells.push(`<div class="cal-c l${Math.min(n, 4)}" title="${trDate(k)}: ${n} bulmaca">${x.getUTCDate()}</div>`); }
   cal.innerHTML = cells.join("");
 }
+const tone = (f, d = .1, type = "sine", v = .12) => { if (!soundOn()) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.value = f; const t = AC.currentTime; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + .02); } catch (e) {} };
+window.PZ_API = { el, shuffle, ri, rng, hash, sleep, sfx, tone, showResult, shareHead, shareTail, fmtTime, trDate, todayKey, record, getP, soundOn };
 window.PZ = { todayKey, hash, rng, initPuzzle, initHub, solve24 };
 })();

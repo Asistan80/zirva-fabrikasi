@@ -8,7 +8,7 @@ export class Sound {
     this.musicG = c.createGain(); this.musicG.connect(this.master); this.sfxG = c.createGain(); this.sfxG.connect(this.master); this.ambG = c.createGain(); this.ambG.connect(this.master);
     const nb = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = nb.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; this.noiseBuf = nb;
     const mk = (type, f, q) => { const s = c.createBufferSource(); s.buffer = nb; s.loop = true; const fl = c.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q || 1; const g = c.createGain(); g.gain.value = 0; s.connect(fl); fl.connect(g); g.connect(this.ambG); s.start(); return { g, fl }; };
-    this.wind = mk("lowpass", 420, .7); this.water = mk("bandpass", 1500, .6);
+    this.wind = mk("lowpass", 420, .7); this.rainN = mk("highpass", 2200, .4); this.water = mk("bandpass", 1500, .6);
     this.pad = []; [196, 246.9, 293.7, 392].forEach((f, i) => { const o = c.createOscillator(); o.type = "sine"; o.frequency.value = f; const g = c.createGain(); g.gain.value = .0; const lfo = c.createOscillator(); lfo.frequency.value = .08 + i * .03; const lg = c.createGain(); lg.gain.value = .02; lfo.connect(lg); lg.connect(g.gain); o.connect(g); g.connect(this.musicG); o.start(); lfo.start(); this.pad.push(g); });
     this.apply(); this.chirpT = 0; this.cricketT = 0;
   }
@@ -22,6 +22,9 @@ export class Sound {
   heart() { this.tone(523, .12, "sine", .18); this.tone(784, .2, "sine", .18, .1); this.tone(1047, .25, "sine", .14, .2); }
   quest() { [523, 659, 784, 1047].forEach((f, i) => this.tone(f, .22, "triangle", .2, i * .11)); }
   shard() { [392, 523, 659, 784, 988, 1319].forEach((f, i) => this.tone(f, .5, "sine", .15, i * .09)); }
+  setRain(v) { if (!this.ctx) return; this.rainN.g.gain.setTargetAtTime(v * .09, this.ctx.currentTime, .6); }
+  thunder() { this.noise(1.6, 120, .35); this.tone(60, 1.4, "sawtooth", .12, 0, -30); }
+  firework() { this.noise(.5, 900, .14); this.tone(420, .5, "sine", .08, 0, -300); }
   bad() { this.tone(180, .2, "sawtooth", .1); }
   finale() { [262, 330, 392, 523, 659, 784, 1047].forEach((f, i) => this.tone(f, 2.2, "sine", .14, i * .35)); }
   // her karede çağrılır: sis, gündüz/gece ve göle yakınlık ile ortam sesi

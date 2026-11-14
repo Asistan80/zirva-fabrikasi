@@ -57,3 +57,4 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0b1a22;color:#f4f0ff;
 #toast div{background:rgba(255,255,255,.94);color:#1b1530;padding:8px 16px;border-radius:999px;font-weight:700;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.4);animation:tin .35s ease;max-width:100%;text-align:center}#toast div.out{opacity:0;transition:opacity .5s}
 @keyframes tin{from{transform:translateY(-12px);opacity:0}}
 @media(max-width:640px){.top{right:146px}#inv{top:146px}.pill{font-size:.8rem}#dlg{bottom:8px}}
+#fishUI{position:absolute;left:50%;top:22%;transform:translateX(-50%);background:rgba(10,14,30,.8);border:1px solid rgba(255,255,255,.25);padding:10px 20px;border-radius:16px;font-weight:800;font-size:1.05rem;text-align:center;animation:pulse 1s ease infinite}#fishUI[hidden]{display:none}

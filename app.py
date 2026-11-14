@@ -5,9 +5,11 @@ from flask import (Flask, render_template, request, jsonify, abort, session, red
                    url_for, flash, Response)
 import store, content, koydata
 from testdata import TESTS
-from puzzledata import GAMES
+from puzzledata import GAMES, CATS
 
 app = Flask(__name__)
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(16)
 app.config.update(SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax", MAX_CONTENT_LENGTH=1024 * 1024)
 
@@ -89,7 +91,7 @@ def games_meta():
 def bulmaca():
     g = visible_games()
     if not g: abort(404)
-    return render_template("bulmaca.html", games=g, meta=games_meta())
+    return render_template("bulmaca.html", games=g, meta=games_meta(), cats=CATS)
 
 @app.route("/bulmaca/<slug>")
 def bulmaca_game(slug):
@@ -230,8 +232,17 @@ def koy():
     if not s.get("koy_on", True): abort(404)
     return render_template("koy.html", ai=bool(API_KEY and s["ai_enabled"] and s.get("koy_ai", True)))
 
-@app.route("/api/koy/chat", methods=["POST"])
+@app.after_request
+def koy_cors(resp):
+    if request.path.startswith("/api/koy/"):
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        resp.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    return resp
+
+@app.route("/api/koy/chat", methods=["POST", "OPTIONS"])
 def api_koy_chat():
+    if request.method == "OPTIONS": return ("", 204)
     s = store.get_settings()
     d = request.get_json(silent=True) or {}
     npc = str(d.get("npc", "")); text = str(d.get("text", "")).strip()[:160]
@@ -250,8 +261,9 @@ def api_koy_chat():
     except Exception:
         return jsonify(mode="fallback", note="Yapay zekâya ulaşılamadı; hazır diyaloglar kullanılıyor.")
 
-@app.route("/api/koy/event", methods=["POST"])
+@app.route("/api/koy/event", methods=["POST", "OPTIONS"])
 def api_koy_event():
+    if request.method == "OPTIONS": return ("", 204)
     d = request.get_json(silent=True) or {}
     if d.get("type") == "finish": store.bump("koy", "finished")
     elif d.get("type") == "start": store.bump("koy", "started")

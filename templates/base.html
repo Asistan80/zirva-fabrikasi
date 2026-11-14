@@ -5,9 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ name }} · Mazeret, Test, Burç, Kızartma{% endblock %}</title>
 <meta name="description" content="{% block desc %}Mazeret üret, saçma testler çöz, burç parodini oku, kendini kızart. Tamamen mizah amaçlıdır.{% endblock %}">
-<meta property="og:title" content="{{ name }}">
-<meta property="og:description" content="Mazeret Fabrikası, Saçma Testler, Burç Parodisi ve Kızartma Odası. Tamamen mizah amaçlıdır.">
+{% block ogimg %}{% endblock %}
+{% set _og = (self.ogimg() | trim) or 'default' %}
+<meta property="og:site_name" content="{{ name }}">
+<meta property="og:locale" content="tr_TR">
 <meta property="og:type" content="website">
+<meta property="og:title" content="{{ self.title() | striptags | trim }}">
+<meta property="og:description" content="{{ self.desc() | striptags | trim }}">
+<meta property="og:url" content="{{ request.url_root.rstrip('/') }}{{ request.path }}">
+<meta property="og:image" content="{{ request.url_root.rstrip('/') }}/static/og/{{ _og }}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ self.title() | striptags | trim }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ self.title() | striptags | trim }}">
+<meta name="twitter:description" content="{{ self.desc() | striptags | trim }}">
+<meta name="twitter:image" content="{{ request.url_root.rstrip('/') }}/static/og/{{ _og }}.jpg">
+<link rel="canonical" href="{{ request.url_root.rstrip('/') }}{{ request.path }}">
 <meta name="theme-color" content="#a56bff">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
 <link rel="stylesheet" href="/static/style.css">

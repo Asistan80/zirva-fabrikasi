@@ -17,6 +17,9 @@ export const NPCS = {
   cemal: { id: "cemal", name: "Değirmenci Cemal Usta", emoji: "🧔", color: 0x3b6ea8, hat: "goggles", scarf: 0x222222, home: [26, -12], work: [24, -15], hours: [6, 21],
     secret: "Bu dişlilerin içinde pınar suyuyla dönen bir mekanizma var. Eskiler 'Nur çarkı' derdi. Onu çalıştıran şey sudan çok o ışıkmış.",
     fallback: ["Şu çark bir türlü oturmuyor, vidasını bulamıyorum.", "Değirmen konuşur bilirsen, ben dinlerim.", "Her şeyin bir mekanizması vardır, pınarın da.", "Yağ, vida, sabır. Üçü de tükendi bende.", "Şu sisi bir kovayla çekebilsem..."] },
+  sukru: { id: "sukru", name: "Bakkal Şükrü", emoji: "🧓", color: 0x5f8a4a, hat: "cap", scarf: 0xd8b050, home: [28, -12], work: [24, -10], hours: [8, 20],
+    secret: "Bu dükkânın altında eski bir kiler var. Büyük dedem kıtlık yıllarında herkese bedava ekmek dağıtırmış. Ben de bazen 'pazarlık' diyerek aslında hediye ederim, sakın söyleme.",
+    fallback: ["Hesap kitap, o kadar ucuz ki zarardayım valla.", "Taze çiçek, sıcak simit, her şey var.", "Balık getirirsen iyi para veririm, mantara da bakarım.", "Pazarlık yok, ama sana indirim var. Şaka şaka!", "Dükkân kapanmadan gel, fener lazım olur."] },
   mirmir: { id: "mirmir", name: "Mırmır (Kedi)", emoji: "🐱", color: 0x1b1b24, hat: "none", scarf: 0xffd34d, home: [-2, 4], work: [4, 6], hours: [19, 5], cat: true,
     secret: "Ağaç Dede'nin altı yüz yaşında olduğunu biliyor muydun? Ben yalnız yedi yaşındayım ama dokuz canım var.",
     fallback: ["Miyav. Gecenin dili benim dilimdir.", "Simit kokusu var, yoksa hayal mi görüyorum?", "Gölgeler bu gece daha uzun.", "Bir bilmece: Sular kurur, ışık söner, ama dibinde ne kalır?", "Çınarın dibinde uyumayı severim, sıcaktır."] },
@@ -93,3 +96,58 @@ export const ACH = {
   kurtar: ["✨", "Pınarın Işığı", "Pınarı uyandır"],
   yuru: ["👟", "Gezgin", "5000 adım at"],
 };
+
+// ---- Yan görevler (ana görev bittikten sonra açılır; muhtarınki giriş sonrası)
+export const SIDE = {
+  mektup: { giver: "muhtar", label: "Muhtar'ın 4 mektubunu dağıt", icon: "✉️", to: ["zehra", "hacer", "cemal", "sukru"], coin: 45,
+    offer: ["Posta sandığında birikmiş mektuplar var. Sis yüzünden postacı gelemiyor.", "Dört mektup: Zehra'ya, Hacer Nine'ye, Cemal'e ve Bakkal Şükrü'ye. Hepsini elden ver, sana da harçlık çıkar."],
+    remind: ["Mektupları sahiplerine ver: fırıncı, masalcı, değirmenci, bakkal. Hepsi tamamlanınca bana dön."],
+    done: ["Hepsi yerine ulaştı demek! Köyde haberleşme geri geldi, eline sağlık.", "Al bakalım, 45 altın. Hak ettin evladım."],
+    letter: { zehra: "Zehra: 'Mektup mu? Aaa, annemden! Tam fırının başında okuyayım...'", hacer: "Hacer Nine: 'Torunumdan mektup... Gözlüğüm nerede? Oku sen evladım, sesli oku.'", cemal: "Cemal: 'Yedek parça siparişi gelmiş! Yoksa yine gecikmeli mi? Hah, tamam.'", sukru: "Şükrü: 'Fatura mı bu? Yok yok, tahsilat! Hay Allah, sağ ol.'" } },
+  mantar: { giver: "zehra", label: "Zehra'ya 4 mantar", icon: "🍄", need: 4, item: "mush", coin: 35,
+    offer: ["Mantarlı pide yapacağım ama sis yüzünden mantarcılar çıkamıyor.", "Ormanda kırmızı şapkalı mantarlar bulursun. Dört tane getir, sana hem altın hem simit."],
+    remind: ["Kırmızı şapkalı, beyaz benekli mantarları ağaçların dibinde ara. Dört tane yeter."],
+    done: ["Mis gibi mantarlar! Pide bu akşam bedava... sana değil tabii, hesap benden.", "Al şu altınları ve iki simit. Eline sağlık."] },
+  balik: { giver: "kemal", label: "Kemal'e 3 balık", icon: "🎣", need: 3, item: "fish", coin: 50,
+    offer: ["Pınar sakin, balıklar yüzeye çıkıyor. Ama benim oltayı sis yedi, kırıldı.", "Sana eski oltamı veriyorum. Pınarın kenarında E'ye bas, balık yakala, sonra üç tane getir. Yanında sabır getir."],
+    remind: ["Pınarın kenarına git, 'Olta at' de, balık vurunca hemen E'ye bas. Üç balık yeter."],
+    done: ["Üç balık, hepsi diri! Ocak başında kızarttık mı tamam.", "Al evladım altınını. Oltayı da sana bıraktım, hep sende kalsın."] },
+  hazine: { giver: "hacer", label: "Hacer Nine'nin 3 madalyon parçası", icon: "🏅", need: 3, item: "medal", coin: 80,
+    offer: ["Pınarın bekçisine ait bir madalyon vardı, üç parçaya ayrılıp köyün üç ucuna gömülmüş.", "Parlayan toprak yığınlarını ara, E ile kaz. Üç parçayı bulursan sana masalın bilinmeyen kısmını anlatırım."],
+    remind: ["Toprak yığınları geceleri bile hafifçe parlar. Harita yok ama minimapte sarı noktalar görürsün."],
+    done: ["Üç parça tam! Hepsini birleştirdim bak, bir kuş figürü çıktı.", "Pınarın bekçisi bir kuşmuş, madalyon onun tüyünden... Al, 80 altın senin. Parçalar bende kalsın, kıymetli."] },
+};
+export const LETTER_TO = SIDE.mektup.to;
+export const FISH = {
+  hamsi: { n: "Hamsi", e: "🐟", p: 6, w: 60 }, sazan: { n: "Sazan", e: "🐠", p: 12, w: 32 }, alabalik: { n: "Alabalık", e: "🐡", p: 22, w: 14 },
+  yayin: { n: "Yayın Balığı", e: "🐋", p: 45, w: 5, rain: 3 }, altin: { n: "Altın Balık", e: "✨", p: 120, w: 3, night: true }, bot: { n: "Eski Çizme", e: "👢", p: 0, w: 8, junk: true },
+};
+export const SHOP = [
+  { id: "cizme", n: "Koşu Çizmesi", e: "👢", p: 80, d: "Daha hızlı yürür ve koşarsın" },
+  { id: "fener", n: "Cep Feneri", e: "🔦", p: 60, d: "Geceleri daha geniş ışık" },
+  { id: "olta2", n: "Gümüş Olta", e: "🎣", p: 100, d: "Balık daha uzun tutunur, nadir balık şansı artar", req: "olta" },
+  { id: "hali", n: "Kilim", e: "🟥", p: 50, d: "Evine yeni bir halı", home: true },
+  { id: "tablo", n: "Tablo", e: "🖼️", p: 70, d: "Evinin duvarına bir manzara", home: true },
+  { id: "saksi", n: "Saksı Çiçeği", e: "🪴", p: 40, d: "Evine canlılık", home: true },
+  { id: "lamba", n: "Yıldız Lambası", e: "💡", p: 90, d: "Tavandan sarkan parlak lamba", home: true },
+  { id: "gramofon", n: "Gramofon", e: "📻", p: 150, d: "Evde müzik çalar", home: true },
+];
+export const BUY_ITEMS = [{ k: "flower", n: "Çiçek", e: "🌸", p: 8 }, { k: "simit", n: "Simit", e: "🥯", p: 12 }];
+export const SELL_PRICE = { mush: 6, antika: 60, flower: 3 };
+export const RIDDLES = [
+  { q: "Sular kurur, ışık söner, ama dibinde ne kalır?", o: ["Taş", "Hatıra", "Kum"], a: 1 },
+  { q: "Yemek yer ama doymaz, su içer ama ölür. Nedir?", o: ["Ateş", "Kurt", "Değirmen"], a: 0 },
+  { q: "Kanatsız uçar, gözsüz ağlar, dişsiz güler. Nedir?", o: ["Kuş", "Bulut", "Yıldız"], a: 1 },
+  { q: "Kuyuya düşer ama ıslanmaz. Nedir?", o: ["Kova", "Taş", "Gölge"], a: 2 },
+  { q: "Çıkardıkça büyür. Nedir?", o: ["Kar", "Borç", "Çukur"], a: 2 },
+];
+GENERIC.fest = ["Bu gece pınarın şerefine şenlik var!", "Bak havai fişekler, köy ilk kez bu kadar güzel.", "Gel biraz dans edelim, olur mu?", "Pınar uyandığından beri gülmekten yoruldum."];
+ACH.tanis[2] = "Köydeki 8 kişiyle de konuş";
+Object.assign(ACH, {
+  balik: ["🎣", "Olta Ustası", "10 balık yakala"], altin: ["✨", "Altın Balık", "Altın balığı yakala"], hazine: ["🏺", "Define Avcısı", "5 kez kaz"],
+  mektup: ["✉️", "Postacı", "Mektup görevini bitir"], mantar: ["🍄", "Mantarcı", "Mantar görevini bitir"], zengin: ["🪙", "Cebi Dolu", "Toplam 300 altın kazan"],
+  ev: ["🏠", "Ev Sahibi", "Kendi evine gir"], yagmur: ["🌧️", "Yağmurda Balık", "Yağmur yağarken balık tut"], senlik: ["🎆", "Şenlik Ruhu", "Köy şenliğine katıl"],
+  foto: ["📷", "Fotoğrafçı", "Bir fotoğraf çek"], bilmece: ["🧩", "Bilmece Ustası", "3 bilmece çöz"], tum: ["🏆", "Köyün Kahramanı", "Tüm görevleri bitir"],
+});
+GIFT.flower.lines.sukru = "Çiçek mi? Vitrine koyarım, müşteri artar!";
+GIFT.simit.lines.sukru = "Simit! Zehra'dan mı aldın? Bana indirim yapmaz o...";

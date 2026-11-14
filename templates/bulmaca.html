@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block ogimg %}bulmaca{% endblock %}
 {% block title %}Günlük Bulmaca · {{ name }}{% endblock %}
 {% block desc %}Her gün yeni kelime, kod, sayı ve hafıza bulmacaları. Seri yap, seviye atla, rozet topla.{% endblock %}
 {% block head %}<link rel="stylesheet" href="/static/puzzles.css">{% endblock %}
@@ -17,10 +18,11 @@
 </div>
 
 <section class="block">
-  <h2 class="sec">🎮 Bulmacalar</h2>
-  <div class="grid">
+  <h2 class="sec">🎮 Bulmacalar <span class="muted small">({{ games|length }} oyun)</span></h2>
+  <div class="cat-bar" id="catBar">{% for k, n in cats %}<button class="cat-btn{{ ' on' if k=='hepsi' }}" data-cat="{{ k }}">{{ n }}</button>{% endfor %}</div>
+  <div class="grid" id="gameGrid">
     {% for slug, g in games.items() %}
-    <a class="tile rv" data-game="{{ slug }}" style="--g1:{{ g.grad[0] }};--g2:{{ g.grad[1] }}" href="/bulmaca/{{ slug }}">
+    <a class="tile rv" data-game="{{ slug }}" data-cat="{{ g.cat }}" style="--g1:{{ g.grad[0] }};--g2:{{ g.grad[1] }}" href="/bulmaca/{{ slug }}">
       <span class="done-mark">✓</span><span class="em">{{ g.emoji }}</span><h3>{{ g.title }}</h3><p>{{ g.desc }}</p><span class="gs"></span><span class="chip">Günlük + sınırsız pratik</span>
     </a>
     {% endfor %}
@@ -37,4 +39,4 @@
   <div class="badges" id="badges"></div>
 </section>
 {% endblock %}
-{% block scripts %}<script src="/static/puzzles.js"></script><script>window.PZ_META={{ meta|tojson }};PZ.initHub();</script>{% endblock %}
+{% block scripts %}<script src="/static/puzzles.js"></script><script>window.PZ_META={{ meta|tojson }};PZ.initHub();document.querySelectorAll('.cat-btn').forEach(function(b){b.onclick=function(){document.querySelectorAll('.cat-btn').forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('#gameGrid .tile').forEach(function(t){t.style.display=(b.dataset.cat==='hepsi'||t.dataset.cat===b.dataset.cat)?'':'none'})}});</script>{% endblock %}

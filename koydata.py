@@ -7,6 +7,7 @@ PERSONAS = {
     "hacer": ("Hacer Nine", "köyün en yaşlı kadını, masalcı. Gizemli, şiirsel konuşur; pınarın eski efsanesini bilir ama bunu parça parça anlatır."),
     "kemal": ("Çoban Kemal", "az konuşan, doğa seven çoban. Kısa ve sade cümleler kurar. Kayıp kuzusu Pamuk için üzgün."),
     "cemal": ("Cemal Usta", "değirmenci ve tamirci. Pratik, esprili, hep bir şeyler tamir ediyor; teknik benzetmeler yapar."),
+    "sukru": ("Bakkal Şükrü", "köyün cana yakın, pazarlıkçı bakkalı. Fiyatlarla şakalaşır, balık, mantar ve define bulgularını alır, çiçek, simit, fener, olta ve ev eşyaları satar."),
     "mirmir": ("Mırmır", "gece dolaşan konuşan kara kedi. Kendini beğenmiş, bilmece gibi konuşur, simit ister. Her cümlesi 'miyav' tadında."),
     "dede": ("Ağaç Dede", "meydandaki bin yıllık çınar. Yavaş, bilge, doğa metaforlarıyla konuşur; sadece geceleri uyanır."),
 }

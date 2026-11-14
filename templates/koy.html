@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta property="og:site_name" content="Zırva Fabrikası"><meta property="og:type" content="website"><meta property="og:title" content="Sisli Pınar Köyü · 3D köy oyunu">
+<meta property="og:description" content="Tarayıcıda oynanan 3D köy macerası: balık tut, kazı yap, görevleri çöz, sisi dağıt.">
+<meta property="og:image" content="{{ request.url_root.rstrip('/') }}/static/og/koy.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{{ request.url_root.rstrip('/') }}/static/og/koy.jpg">
 <title>Sisli Pınar Köyü · 3D köy oyunu</title>
 <meta name="description" content="Yapay zekâlı 3D köy oyunu: köylülerle konuş, görevleri yap, dört pınar damlasını topla ve sisi dağıt. Tarayıcıda oynanır.">
 <meta name="theme-color" content="#0b1a22">
@@ -20,7 +24,7 @@
     <p class="sub">Köyün pınarı uykuya daldı, sis her yeri sardı. Köylülerin dertlerine derman ol, dört pınar damlasını topla ve geceleyin pınarı uyandır.</p>
     <label class="lbl">Adın ne?<input id="iName" maxlength="16" placeholder="Misafir" autocomplete="off"></label>
     <div class="row"><button class="btn" id="iStart">🌫️ Yeni oyun</button><button class="btn ghost" id="iCont" hidden>▶️ Devam et</button></div>
-    <ul class="how"><li>🕹️ <b>WASD</b> yürü · <b>Shift</b> koş · <b>Boşluk</b> zıpla</li><li>🗣️ <b>E</b> konuş · <b>J</b> günlük · <b>P</b> menü</li><li>📱 Mobilde sol joystick + sağ tarafı sürükle</li>{% if ai %}<li>🤖 Köylülerle serbest sohbet yapay zekâyla çalışır; olmazsa hazır diyaloglar devreye girer.</li>{% else %}<li>💬 Köylülerle sohbet hazır diyaloglarla çalışır.</li>{% endif %}</ul>
+    <ul class="how"><li>🕹️ <b>WASD</b> yürü · <b>Shift</b> koş · <b>Boşluk</b> zıpla</li><li>🗣️ <b>E</b> konuş / kaz / olta · <b>J</b> günlük · <b>F</b> foto · <b>P</b> menü</li><li>🎣 Balık tut, ⛏️ define ara, 🏠 evini süsle, 🛒 bakkaldan alışveriş yap</li><li>📱 Mobilde sol joystick + sağ tarafı sürükle</li>{% if ai %}<li>🤖 Köylülerle serbest sohbet yapay zekâyla çalışır; olmazsa hazır diyaloglar devreye girer.</li>{% else %}<li>💬 Köylülerle sohbet hazır diyaloglarla çalışır.</li>{% endif %}</ul>
     <a class="back" href="/">← Zırva Fabrikası</a>
   </div>
 </div>
@@ -29,8 +33,9 @@
   <div class="top"><div class="pill" id="clock"></div><div class="pill obj" id="obj"></div></div>
   <canvas id="mini" width="130" height="130"></canvas>
   <div id="inv"></div>
-  <div class="btns"><button id="btnJ" class="rb" title="Günlük">📖</button><button id="btnM" class="rb" title="Menü">⏸️</button></div>
+  <div class="btns"><button id="btnP" class="rb" title="Fotoğraf (F)">📷</button><button id="btnJ" class="rb" title="Günlük">📖</button><button id="btnM" class="rb" title="Menü">⏸️</button></div>
   <div id="prompt" hidden></div>
+  <div id="fishUI" hidden></div>
   <div id="joy"><i id="knob"></i></div>
   <button id="btnE" class="act">E</button><button id="btnJump" class="act jump">⤒</button>
 </div>
