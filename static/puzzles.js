@@ -58,6 +58,7 @@ const BADGES = [
   ["yildiz", "⭐", "Mükemmeliyetçi", "Bir bulmacadan 5 yıldız al", p => Object.values(p.days).some(d => Object.values(d).some(v => v && v.stars === 5))],
   ["kelime3", "🔤", "Kelime Avcısı", "Zırva Kelime'yi 3 denemede bil", p => Object.values(p.days).some(d => d.kelime && d.kelime.win && d.kelime.tries <= 3)],
   ["xp500", "💎", "Usta Zırva", "500 XP topla", p => p.xp >= 500],
+  ["lig", "🏅", "Altın Lig", "Bir haftada 40 bulmaca çöz", p => LEAGUES[2] && Object.keys(p.days).some(k => leagueInfo(p, k).cnt >= 40)],
   ["pratik", "🎒", "Antrenman Gözü", "10 pratik oyun oyna", p => p.practice >= 10],
 ];
 function anyDaily(p) { return Object.values(p.days).some(d => Object.values(d).some(v => v && v.done)); }
@@ -424,6 +425,17 @@ function initPuzzle(slug) {
 }
 
 /* ---------- merkez sayfası ---------- */
+const LEAGUES = [["Bronz", "🥉", 8], ["Gümüş", "🥈", 20], ["Altın", "🥇", 40], ["Elmas", "💎", 70]];
+function weekOf(key) { const d = new Date(key + "T12:00:00Z"); const wd = (d.getUTCDay() + 6) % 7; d.setUTCDate(d.getUTCDate() - wd); return Array.from({ length: 7 }, (_, i) => { const x = new Date(d); x.setUTCDate(x.getUTCDate() + i); return x.toISOString().slice(0, 10); }); }
+function leagueInfo(p, key) { const days = weekOf(key); const cnt = days.reduce((a, k) => a + Object.values(p.days[k] || {}).filter(v => v && v.done).length, 0); const act = days.filter(k => Object.values(p.days[k] || {}).some(v => v && v.done)).length; let tier = -1; LEAGUES.forEach((L, i) => { if (cnt >= L[2]) tier = i; }); return { cnt, act, tier, days }; }
+function initLeague(p, key) {
+  const box = $("#league"); if (!box) return; const L = leagueInfo(p, key), nx = LEAGUES[L.tier + 1], cur = LEAGUES[L.tier];
+  const pct = nx ? Math.min(100, Math.round((L.cnt - (cur ? cur[2] : 0)) * 100 / (nx[2] - (cur ? cur[2] : 0)))) : 100;
+  box.innerHTML = `<div class="lg-top"><span class="lg-em">${cur ? cur[1] : "🎯"}</span><div><b>${cur ? cur[0] + " Ligi" : "Lige henüz girmedin"}</b><div class="muted small">Bu hafta ${L.cnt} bulmaca · ${L.act}/7 gün oynadın</div></div></div>
+    <div class="meter"><i style="width:${pct}%"></i></div><div class="muted small">${nx ? `${nx[2] - L.cnt} bulmaca sonra: ${nx[1]} ${nx[0]} Ligi` : "En üst ligdesin! 👑"}</div>
+    <div class="lg-days">${L.days.map((k, i) => { const n = Object.values(p.days[k] || {}).filter(v => v && v.done).length; return `<span class="${n ? "on" : ""}${k === key ? " now" : ""}" title="${k}">${["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"][i]}<b>${n || ""}</b></span>`; }).join("")}</div>
+    <div class="lg-tiers">${LEAGUES.map((l, i) => `<span class="${i <= L.tier ? "on" : ""}">${l[1]} ${l[0]} <small>${l[2]}</small></span>`).join("")}</div>`;
+}
 function initHub() {
   const p = getP(), key = todayKey(), day = p.days[key] || {}, lv = levelInfo(p.xp);
   const doneN = gameIds().filter(g => day[g] && day[g].done).length;
@@ -432,6 +444,7 @@ function initHub() {
   $("#hToday").textContent = `${doneN}/${gameIds().length}`; $("#hTodayBar").style.width = (doneN * 100 / gameIds().length) + "%";
   $$("[data-game]").forEach(t => { const d = day[t.dataset.game]; if (d && d.done) { t.classList.add("solved"); const s = $(".gs", t); if (s) s.textContent = "★".repeat(d.stars) + "☆".repeat(5 - d.stars); } });
   $$("[data-game]").forEach(t => { const b = (p.best || {})[t.dataset.game], g = $(".gb", t); if (g && b) g.textContent = `🏆 ${"★".repeat(b.stars)} · ${fmtTime(b.time)}`; });
+  initLeague(p, key);
   const bx = $("#badges"); bx.innerHTML = BADGES.map(b => `<div class="badge ${p.badges.includes(b[0]) ? "on" : ""}" title="${b[3]}"><span>${b[1]}</span><b>${b[2]}</b><small>${b[3]}</small></div>`).join("");
   const cd = $("#hCd"); const upd = () => cd.textContent = untilMidnight(); upd(); setInterval(upd, 1000);
   // son 14 gün

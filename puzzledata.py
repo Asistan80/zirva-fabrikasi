@@ -67,6 +67,15 @@ _N3 = [
 ]
 for s,t,e,g,c,d,r in _N3:
     GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
+_N4 = [
+ ("satranc","Satranç","♟️",("#78350f","#f59e0b"),"mantik","Bilgisayara karşı satranç: kolay, normal ve zor seçenekleri.",["Beyaz sensin ve ilk sen oynarsın. Taşını seç, yeşil noktalardan birine dokun.","Şahı mat edersen kazanırsın. Şah çekilince uyarı çıkar.","Bu sürümde rok ve en passant yok, piyon sona gelince vezir olur.","70 hamlede bitmezse berabere sayılır."]),
+ ("mancala","Mancala","🫘",("#b45309","#65a30d"),"mantik","Taşları çukurlara dağıt, en çok taşı kendi kuyuna topla.",["Alt sıra senin: bir çukura dokun, taşlar saat yönünün tersine dağıtılır.","Son taş kendi kuyuna düşerse bir tur daha oynarsın.","Son taş kendi boş çukuruna düşerse karşısındaki taşları kazanırsın.","Bir taraf boşalınca oyun biter, kuyusunda çok taş olan kazanır."]),
+ ("zuma","Zırva Zuma","🐸",("#16a34a","#06b6d4"),"refleks","Renkli top zincirini deliğe ulaşmadan patlat.",["Fareyle nişan al, dokun veya tıkla: top fırlar.","Aynı renkten 3 ve fazlası yan yana gelirse patlar.","Zincir kafatasına ulaşırsa kaybedersin.","Tüm topları temizlersen kazanırsın."]),
+ ("bomba","Bomba Adam","💣",("#f97316","#7c3aed"),"refleks","Bomba koy, blokları kır, yaratıkları patlat.",["Ok tuşları/WASD ile yürü, boşluk ile bomba koy. Ekran düğmeleri de var.","Bomba 2 saniyede patlar, ateş 4 yöne yayılır.","Kırdığın bloklardan 🔥 (menzil) ve 💣 (fazla bomba) çıkar.","4 yaratığı da yok et. 2 canın var, kendi bombandan da zarar görürsün."]),
+ ("tank","Tank Savaşı","🪖",("#15803d","#b45309"),"refleks","Üssünü koru, düşman tanklarını yok et.",["Ok tuşları/WASD ile sür, boşluk ile ateş et. Ekran düğmeleri de var.","Tuğla duvarlar kırılır, çelik duvarlar kırılmaz.","Alttaki 🏰 üssün yıkılırsa ya da 3 canın biterse kaybedersin.","5 düşman tankını da yok et."]),
+]
+for s,t,e,g,c,d,r in _N4:
+    GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
 for _s in ("kelime","kodkir","hedef24","kaydir","hafiza","emoji"):
     GAMES[_s].setdefault("cat", {"kelime":"kelime","kodkir":"mantik","hedef24":"sayi","kaydir":"mantik","hafiza":"refleks","emoji":"mantik"}[_s])
 CATS = [("hepsi","🎲 Hepsi"),("kelime","🔤 Kelime"),("sayi","🔢 Sayı"),("mantik","🧠 Mantık"),("refleks","⚡ Refleks")]

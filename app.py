@@ -395,6 +395,26 @@ def admin_pool():
     flash("Havuzlar kaydedildi ✓")
     return redirect(url_for("admin") + "#havuz")
 
+@app.route("/admin/pp", methods=["POST"])
+@admin_required
+def admin_pp():
+    if not csrf_ok(): abort(400)
+    out = []
+    for l in request.form.get("pp_lines", "").splitlines():
+        parts = [x.strip() for x in l.split("|")]
+        if len(parts) != 4: continue
+        h, mode, clue, ans = parts
+        h = h.upper()[:1]
+        if mode.lower() not in ("kolay", "normal", "zor") or not h or not clue or not ans: continue
+        out.append({"l": h, "mode": mode.lower(), "clue": clue[:200], "ans": ans.upper()[:30]})
+    store.save_settings({"extra_pp": out[:300]})
+    flash(f"Passaparola soruları kaydedildi ✓ ({len(out)} soru)")
+    return redirect(url_for("admin") + "#havuz")
+
+@app.route("/api/pp-extra")
+def api_pp_extra():
+    return jsonify(store.get_settings().get("extra_pp", []))
+
 @app.route("/admin/ai-test", methods=["POST"])
 @admin_required
 def admin_ai_test():

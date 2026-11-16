@@ -60,6 +60,14 @@
 <section class="glass panel" id="havuz" style="margin-top:22px">
   <h2 style="margin:0 0 6px">📝 Yedek havuzlar</h2>
   <p class="muted small">Her satır bir metin. Yapay zekâ kapalıyken veya limit dolunca bu cümleler kullanılır. Mazeret cümlelerinin sonuna otomatik "Bu yüzden ..." eklenir.</p>
+  <form method="post" action="/admin/pp" style="margin-bottom:18px">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <h3>🎡 Passaparola ek soruları</h3>
+    <p class="muted small">Her satır: <code>HARF|mod|ipucu|CEVAP</code> (mod: kolay, normal veya zor). Örnek: <code>K|kolay|Havlayan evcil hayvan|KÖPEK</code>. Cevap harfle başlamalı.</p>
+    <textarea name="pp_lines" rows="6" placeholder="K|kolay|Havlayan evcil hayvan|KÖPEK">{% for q in s.extra_pp %}{{ q.l }}|{{ q.mode }}|{{ q.clue }}|{{ q.ans }}
+{% endfor %}</textarea>
+    <button class="btn sm" type="submit">💾 Soruları kaydet</button>
+  </form>
   <form method="post" action="/admin/pool">
     <input type="hidden" name="csrf" value="{{ csrf }}">
     {% for k, v in tonlar.items() %}<label>{{ v[0] }} {{ v[1] }} mazeretler</label><textarea name="pool_{{ k }}">{{ s.extra_excuses[k]|join('\n') }}</textarea>{% endfor %}

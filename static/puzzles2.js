@@ -97,6 +97,7 @@ const PPH = {
   S: ["Susayınca içilen, berrak, tatsız ve kokusuz sıvı", "SU"], "Ş": ["Yağmurda açılan, saplı, kumaş gövdeli koruyucu", "ŞEMSİYE"], T: ["Sofrada yemeğin konulduğu yassı kap", "TABAK"], U: ["Havada giden, kanatlı ve motorlu yolcu taşıtı", "UÇAK"],
   "Ü": ["Salkım hâlinde olur, kurutulursa kuru üzüm, sıkılırsa pekmez ya da şarap olur", "ÜZÜM"], V: ["Başı, kolları, bacakları ve gövdesiyle insanın tamamı", "VÜCUT"], Y: ["Bulutlardan damla damla inen, şemsiyeyi açtıran gök olayı", "YAĞMUR"], Z: ["Siyah beyaz çizgili at akrabası, Afrika'da yaşar", "ZEBRA"],
 };
+window.PP_EXTRA = []; try { fetch('/api/pp-extra').then(r => r.json()).then(j => { if (Array.isArray(j)) window.PP_EXTRA = j; }).catch(() => {}); } catch (e) {}
 function chooser(root, A, title, list, cb) { // list=[[key,label,desc]]
   const { el } = A; const box = el("div", "md-box"); box.appendChild(el("div", "md-title", title)); const g = el("div", "md-list");
   list.forEach(([k, l, d]) => { const b = el("button", "md-btn", `<b>${l}</b><small>${d}</small>`); b.onclick = () => { box.remove(); cb(k); }; g.appendChild(b); }); box.appendChild(g); root.appendChild(box); return box;
@@ -108,7 +109,7 @@ function gPassaparola(root, ctx, A) {
   function run(mode) {
     const { el, shuffle, sfx, tone, showResult, shareHead, shareTail } = A; const two = mode === "cift";
     const order = "ABCÇDEFGHIİJKLMNOÖPRSŞTUÜVYZ".split("").filter(l => PP[l]);
-    const Q = order.map(l => { const src = mode === "kolay" ? PP[l][0] : mode === "zor" ? PPH[l] : PP[l][1]; return { l, clue: src[0], ans: src[1], st: 0, rev: 0 }; });
+    const Q = order.map(l => { let src = mode === "kolay" ? PP[l][0] : mode === "zor" ? PPH[l] : PP[l][1]; const ex = (window.PP_EXTRA || []).filter(e => e.l === l && FOLD(e.ans).startsWith(FOLD(l)) && (e.mode === (mode === "cift" ? "normal" : mode))); if (ex.length && ctx.rnd() < .5) { const e = ex[Math.floor(ctx.rnd() * ex.length)]; src = [e.clue, e.ans]; } return { l, clue: src[0], ans: src[1], st: 0, rev: 0 }; });
     const cfg = { kolay: [300, 8, 12, 0], normal: [270, 5, 14, 0], zor: [200, 2, 14, 5], cift: [120, 3, 0, 0] }[mode]; const hintMax = cfg[1], need = cfg[2], pen = cfg[3];
     const left = two ? [120, 120] : [cfg[0]]; let hints = hintMax, cur = 0, who = 0, over = false;
     const ring = el("div", "pp-ring"); Q.forEach((q, i) => { const d = el("span", "pp-l", q.l); q.d = d; const a = i / Q.length * 6.2832 - 1.5708; d.style.left = (50 + 44 * Math.cos(a)) + "%"; d.style.top = (50 + 44 * Math.sin(a)) + "%"; ring.appendChild(d); });

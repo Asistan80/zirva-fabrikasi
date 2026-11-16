@@ -24,6 +24,7 @@ DEFAULT_SETTINGS = {
     "hidden_tests": [],
     "extra_excuses": {"inandirici": [], "absurt": [], "dramatik": [], "bilimsel": []},
     "extra_roasts": [],
+    "extra_pp": [],
 }
 
 def _path(name):

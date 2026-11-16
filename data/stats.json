@@ -20,9 +20,9 @@
    "win": 3
   },
   "passaparola": {
-   "done": 4,
-   "daily": 4,
-   "win": 4
+   "done": 5,
+   "daily": 5,
+   "win": 5
   },
   "adamasmaca": {
    "done": 3,
@@ -172,6 +172,31 @@
    "done": 1,
    "daily": 1,
    "win": 1
+  },
+  "satranc": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "mancala": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "zuma": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "bomba": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "tank": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
   }
  },
  "daily": {
@@ -193,7 +218,7 @@
    "roast": 0,
    "burc": 0,
    "test": 0,
-   "puzzle": 35
+   "puzzle": 41
   }
  },
  "since": "2026-11-13",

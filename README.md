@@ -53,3 +53,8 @@ Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
 - **6 yeni oyun (toplam 38):** Blok Düşür (Tetris), Labirent, Reversi (bilgisayara karşı), Blackjack 21, Kara Karo, Zırva Kuşu (`static/puzzles5.js`).
 - **Tüm oyunlarda:** üst kısımda canlı süre sayacı, sonuçta toplam süre, 🏆 kişisel rekor (hub kartlarında görünür), daha büyük tahtalar, gradyan renkler.
 - `window.PZ_DATA.chooser` ile oyunlara kolayca mod/zorluk seçici eklenebilir.
+
+### v6.4
+- **Haftalık Lig:** merkez sayfasında pazartesi-pazar bulmaca sayacı; Bronz 8 / Gümüş 20 / Altın 40 / Elmas 70 bulmaca. Yeni rozet: Altın Lig.
+- **Admin → Passaparola ek soruları:** `HARF|mod|ipucu|CEVAP` satırlarıyla soru ekle (`/api/pp-extra` ile oyuna gelir, kolay/normal/zor modlarına karışır).
+- **5 yeni oyun (toplam 43):** Satranç (3 zorluk, rok ve en passant yok), Mancala (3 zorluk), Zırva Zuma, Bomba Adam (Bomberman), Tank Savaşı (`static/puzzles6.js`).
