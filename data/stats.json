@@ -119,9 +119,9 @@
    "win": 1
   },
   "dortgelsin": {
-   "done": 1,
-   "daily": 1,
-   "win": 1
+   "done": 3,
+   "daily": 3,
+   "win": 3
   },
   "kostebek": {
    "done": 1,
@@ -154,9 +154,9 @@
    "win": 1
   },
   "reversi": {
-   "done": 1,
-   "daily": 1,
-   "win": 1
+   "done": 2,
+   "daily": 2,
+   "win": 2
   },
   "blackjack": {
    "done": 1,
@@ -197,6 +197,16 @@
    "done": 1,
    "daily": 1,
    "win": 1
+  },
+  "noktaci": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "uzay": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
   }
  },
  "daily": {
@@ -218,7 +228,7 @@
    "roast": 0,
    "burc": 0,
    "test": 0,
-   "puzzle": 41
+   "puzzle": 46
   }
  },
  "since": "2026-11-13",

@@ -421,6 +421,9 @@ function initPuzzle(slug) {
   CUR.slug = slug; CUR.mode = "daily";
   $$("[data-mode]").forEach(b => b.onclick = () => switchMode(b.dataset.mode));
   const snd = $("#snd"); if (snd) { const set = () => snd.textContent = soundOn() ? "🔊" : "🔇"; set(); snd.onclick = () => { LS.set("zf_sound", !soundOn()); set(); sfx("good"); }; }
+  const mus = $("#mus"); if (mus) { let tm = null; const on = () => LS.get("zf_music", false); const setM = () => { mus.textContent = on() ? "🎵" : "🎶"; mus.style.opacity = on() ? 1 : .55; };
+    const play = () => { clearInterval(tm); if (!on()) return; const sc = [0, 2, 4, 7, 9, 12, 14, 16], root = [220, 196, 247, 175][hash(slug) % 4]; let i = 0; tm = setInterval(() => { if (!on() || !soundOn()) return; const k = sc[(Math.random() * sc.length) | 0]; tone(root * 2 ** (k / 12), .55, "sine", .045); if (i++ % 4 === 0) tone(root / 2, 1, "triangle", .05); }, 430); };
+    mus.onclick = () => { LS.set("zf_music", !on()); setM(); play(); sfx("tap"); }; setM(); play(); addEventListener("pagehide", () => clearInterval(tm)); }
   start();
 }
 

@@ -10,6 +10,7 @@
   <div class="pz-bar">
     <div class="seg2"><button data-mode="daily" class="on">📅 Günlük</button><button data-mode="practice">🎲 Pratik</button></div>
     <button class="icon-btn" id="snd" aria-label="Ses">🔊</button>
+    <button class="icon-btn" id="mus" aria-label="Müzik" title="Arka plan müziği">🎶</button>
     <a class="icon-btn" href="/bulmaca" style="text-decoration:none">🏠</a>
   </div>
   <details class="rules"><summary>Nasıl oynanır?</summary><ul>{% for r in g.rules %}<li>{{ r }}</li>{% endfor %}</ul></details>
@@ -34,6 +35,7 @@
 <script src="/static/puzzles4.js"></script>
 <script src="/static/puzzles5.js"></script>
 <script src="/static/puzzles6.js"></script>
+<script src="/static/puzzles7.js"></script>
 <script>window.PZ_META={{ meta|tojson }};window.PZ_FEATURED={{ featured|tojson }};PZ.initPuzzle({{ slug|tojson }});
 (function(){try{var p=JSON.parse(localStorage.getItem('zf_pz2')||'{}'),k=PZ.todayKey(),d=(p.days||{})[k]||{};document.querySelectorAll('[data-game]').forEach(function(a){if(d[a.dataset.game]&&d[a.dataset.game].done)a.classList.add('solved')})}catch(e){}})();</script>
 {% endblock %}

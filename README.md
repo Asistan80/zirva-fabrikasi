@@ -58,3 +58,8 @@ Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
 - **Haftalık Lig:** merkez sayfasında pazartesi-pazar bulmaca sayacı; Bronz 8 / Gümüş 20 / Altın 40 / Elmas 70 bulmaca. Yeni rozet: Altın Lig.
 - **Admin → Passaparola ek soruları:** `HARF|mod|ipucu|CEVAP` satırlarıyla soru ekle (`/api/pp-extra` ile oyuna gelir, kolay/normal/zor modlarına karışır).
 - **5 yeni oyun (toplam 43):** Satranç (3 zorluk, rok ve en passant yok), Mancala (3 zorluk), Zırva Zuma, Bomba Adam (Bomberman), Tank Savaşı (`static/puzzles6.js`).
+
+### v6.5
+- **Yeni oyunlar (toplam 45):** Noktacı (Pac-Man tarzı) ve Uzay Savunması (Space Invaders tarzı) — `static/puzzles7.js`.
+- **2 Oyuncu modu:** Dört Gelsin ve Reversi artık aynı cihazda iki kişi oynanabilir (başlangıçta mod seçilir).
+- **Arka plan müziği:** oyun sayfasında 🎶 düğmesi, oyuna göre farklı tonda sakin bir müzik üretir (WebAudio, dosya yok). Tercih tarayıcıda saklanır, ses kapalıysa çalmaz.

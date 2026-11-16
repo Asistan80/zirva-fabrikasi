@@ -81,18 +81,22 @@ function gLabirent(root, ctx, A) {
 
 /* ===== Reversi (bilgisayara karşı) ===== */
 function gReversi(root, ctx, A) {
+  CH()(root, A, "Reversi modu", [["1", "🤖 Bilgisayara karşı", "Tek kişilik"], ["2", "👥 2 Oyuncu", "Aynı cihazda sırayla"]], m => reversiRun(root, ctx, A, m === "2"));
+  ctx.auto = () => { if (!ctx.__a) reversiRun(root, ctx, A, false); ctx.__a(); };
+}
+function reversiRun(root, ctx, A, two) {
   const { el, sfx, showResult, shareHead, shareTail, sleep } = A; const N = 8; let b = Array(64).fill(0); b[27] = b[36] = 2; b[28] = b[35] = 1; let turn = 1, over = false, busy = false;
   const info = el("div", "ka-info"), board = el("div", "rv-grid"); root.append(info, board); const D = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
   const flips = (bd, i, p) => { const r = Math.floor(i / N), c = i % N, o = []; if (bd[i]) return o; D.forEach(([a, d]) => { const t = []; let y = r + a, x = c + d; while (y >= 0 && y < N && x >= 0 && x < N && bd[y * N + x] === 3 - p) { t.push(y * N + x); y += a; x += d; } if (t.length && y >= 0 && y < N && x >= 0 && x < N && bd[y * N + x] === p) o.push(...t); }); return o; };
   const moves = (bd, p) => { const o = []; for (let i = 0; i < 64; i++) { const f = flips(bd, i, p); if (f.length) o.push([i, f]); } return o; };
   const W = i => { const r = Math.floor(i / N), c = i % N; const e = k => k === 0 || k === 7, n = k => k === 1 || k === 6; if (e(r) && e(c)) return 25; if ((n(r) && e(c)) || (e(r) && n(c))) return -8; if (n(r) && n(c)) return -12; if (e(r) || e(c)) return 4; return 1; };
   const cnt = p => b.filter(v => v === p).length;
-  function paint() { const mv = turn === 1 && !busy ? moves(b, 1).map(x => x[0]) : []; info.innerHTML = `<span>⚫ Sen: <b>${cnt(1)}</b></span><span>⚪ Bilgisayar: <b>${cnt(2)}</b></span>`; board.innerHTML = ""; b.forEach((v, i) => { const c = el("button", "rv-c"); if (v) c.appendChild(el("div", "rv-d " + (v === 1 ? "bk" : "wh"))); else if (mv.includes(i)) c.appendChild(el("div", "rv-h")); c.onclick = () => play(i); board.appendChild(c); }); }
+  function paint() { const mv = (two || turn === 1) && !busy ? moves(b, turn).map(x => x[0]) : []; info.innerHTML = two ? `<span>⚫ Siyah: <b>${cnt(1)}</b></span><span>Sıra: ${turn === 1 ? "⚫" : "⚪"}</span><span>⚪ Beyaz: <b>${cnt(2)}</b></span>` : `<span>⚫ Sen: <b>${cnt(1)}</b></span><span>⚪ Bilgisayar: <b>${cnt(2)}</b></span>`; board.innerHTML = ""; b.forEach((v, i) => { const c = el("button", "rv-c"); if (v) c.appendChild(el("div", "rv-d " + (v === 1 ? "bk" : "wh"))); else if (mv.includes(i)) c.appendChild(el("div", "rv-h")); c.onclick = () => play(i); board.appendChild(c); }); }
   const put = (i, f, p) => { b[i] = p; f.forEach(k => b[k] = p); };
-  async function play(i) { if (over || busy || turn !== 1) return; const f = flips(b, i, 1); if (!f.length) return; busy = true; put(i, f, 1); sfx("tap"); paint(); await sleep(350); await aiTurns(); busy = false; paint(); }
+  async function play(i) { if (two) { if (over) return; const f2 = flips(b, i, turn); if (!f2.length) return; put(i, f2, turn); sfx("tap"); const nx = 3 - turn; if (moves(b, nx).length) turn = nx; else if (!moves(b, turn).length) { paint(); return end(); } paint(); return; } if (over || busy || turn !== 1) return; const f = flips(b, i, 1); if (!f.length) return; busy = true; put(i, f, 1); sfx("tap"); paint(); await sleep(350); await aiTurns(); busy = false; paint(); }
   async function aiTurns() { for (;;) { if (!moves(b, 1).length && !moves(b, 2).length) return end(); const ms = moves(b, 2); if (!ms.length) { return; } let best = null, bv = -1e9; ms.forEach(([i, f]) => { const v = W(i) * 3 + f.length + ctx.rnd() * 3; if (v > bv) { bv = v; best = [i, f]; } }); await sleep(450); put(best[0], best[1], 2); sfx("tap"); paint(); if (moves(b, 1).length) return; if (!moves(b, 2).length) return end(); await sleep(350); } }
-  function end() { if (over) return; over = true; const a = cnt(1), c = cnt(2), win = a > c; showResult(ctx, { win, stars: win ? (a - c >= 24 ? 5 : a - c >= 12 ? 4 : 3) : a === c ? 2 : 1, title: win ? "Tahtayı fethettin!" : a === c ? "Berabere" : "Bilgisayar kazandı", text: `⚫ ${a} - ⚪ ${c}`, share: `${shareHead(ctx, a + "-" + c)}\n⚫⚪ Reversi${shareTail(ctx)}` }); }
-  ctx.auto = () => { for (let i = 0; i < 64; i++) b[i] = i < 40 ? 1 : 2; end(); }; paint();
+  function end() { if (over) return; over = true; const a = cnt(1), c = cnt(2), win = a > c; if (two) { showResult(ctx, { win: true, stars: 3, title: a === c ? "Berabere" : a > c ? "⚫ Siyah kazandı!" : "⚪ Beyaz kazandı!", text: `⚫ ${a} - ⚪ ${c}`, share: `${shareHead(ctx, a + "-" + c)}\n⚫⚪ Reversi 2 Oyuncu${shareTail(ctx)}` }); return; } showResult(ctx, { win, stars: win ? (a - c >= 24 ? 5 : a - c >= 12 ? 4 : 3) : a === c ? 2 : 1, title: win ? "Tahtayı fethettin!" : a === c ? "Berabere" : "Bilgisayar kazandı", text: `⚫ ${a} - ⚪ ${c}`, share: `${shareHead(ctx, a + "-" + c)}\n⚫⚪ Reversi${shareTail(ctx)}` }); }
+  ctx.__a = () => { for (let i = 0; i < 64; i++) b[i] = i < 40 ? 1 : 2; end(); }; paint();
 }
 
 /* ===== Blackjack 21 ===== */

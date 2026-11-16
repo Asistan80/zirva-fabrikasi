@@ -119,6 +119,10 @@ function gFlood(root, ctx, A) {
 
 /* ===== Dört Gelsin (Connect 4, bilgisayara karşı) ===== */
 function gDort(root, ctx, A) {
+  window.PZ_DATA.chooser(root, A, "Dört Gelsin modu", [["1", "🤖 Bilgisayara karşı", "Tek kişilik"], ["2", "👥 2 Oyuncu", "Aynı cihazda sırayla"]], m => dortRun(root, ctx, A, m === "2"));
+  ctx.auto = () => { if (!ctx.__a) dortRun(root, ctx, A, false); ctx.__a(); };
+}
+function dortRun(root, ctx, A, two) {
   const { el, sfx, showResult, shareHead, shareTail, sleep } = A; const R = 6, C = 7; let b = Array(R * C).fill(0), turn = 1, over = false, moves = 0, busy = false;
   const info = el("div", "ka-info"), board = el("div", "c4-grid"); root.append(info, board);
   const LINES = []; for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) [[0, 1], [1, 0], [1, 1], [1, -1]].forEach(([dr, dc]) => { const e = []; for (let k = 0; k < 4; k++) { const y = r + dr * k, x = c + dc * k; if (y < 0 || y >= R || x < 0 || x >= C) return; e.push(y * C + x); } LINES.push(e); });
@@ -126,11 +130,11 @@ function gDort(root, ctx, A) {
   const score = bd => { let s = 0; LINES.forEach(l => { const a = l.filter(i => bd[i] === 2).length, h = l.filter(i => bd[i] === 1).length; if (a && h) return; if (a) s += [0, 1, 4, 30, 1000][a]; if (h) s -= [0, 1, 5, 40, 1000][h]; }); for (let r = 0; r < R; r++) if (bd[r * C + 3] === 2) s += 3; return s; };
   function mm(bd, d, al, be, mx) { if (win(bd, 2)) return 100000 + d; if (win(bd, 1)) return -100000 - d; if (!d || bd.every(Boolean)) return score(bd); let best = mx ? -1e9 : 1e9; for (const c of [3, 2, 4, 1, 5, 0, 6]) { const i = drop(bd, c); if (i < 0) continue; bd[i] = mx ? 2 : 1; const v = mm(bd, d - 1, al, be, !mx); bd[i] = 0; if (mx) { best = Math.max(best, v); al = Math.max(al, v); } else { best = Math.min(best, v); be = Math.min(be, v); } if (be <= al) break; } return best; }
   function ai() { let bc = [], bv = -1e9; for (const c of [0, 1, 2, 3, 4, 5, 6]) { const i = drop(b, c); if (i < 0) continue; b[i] = 2; const v = mm(b, 3, -1e9, 1e9, false); b[i] = 0; if (v > bv) { bv = v; bc = [c]; } else if (v === bv) bc.push(c); } if (ctx.rnd() < .12) { const ok = [0, 1, 2, 3, 4, 5, 6].filter(c => drop(b, c) >= 0); return ok[Math.floor(ctx.rnd() * ok.length)]; } return bc[Math.floor(ctx.rnd() * bc.length)]; }
-  function paint(wl) { info.innerHTML = `<span>🔴 Sen · 🟡 Bilgisayar</span><span>Hamle: ${moves}</span>`; board.innerHTML = ""; for (let c = 0; c < C; c++) { const col = el("button", "c4-col"); for (let r = 0; r < R; r++) { const v = b[r * C + c]; col.appendChild(el("div", "c4-d" + (v === 1 ? " p" : v === 2 ? " a" : "") + (wl && wl.includes(r * C + c) ? " w" : ""))); } col.onclick = () => play(c); board.appendChild(col); } }
-  async function play(c) { if (over || busy || turn !== 1) return; const i = drop(b, c); if (i < 0) return; busy = true; b[i] = 1; moves++; sfx("tap"); let w = win(b, 1); paint(w); if (w) return end(1, w); if (b.every(Boolean)) return end(0);
+  function paint(wl) { info.innerHTML = two ? `<span>Sıra: ${turn === 1 ? "🔴 Kırmızı" : "🟡 Sarı"}</span><span>Hamle: ${moves}</span>` : `<span>🔴 Sen · 🟡 Bilgisayar</span><span>Hamle: ${moves}</span>`; board.innerHTML = ""; for (let c = 0; c < C; c++) { const col = el("button", "c4-col"); for (let r = 0; r < R; r++) { const v = b[r * C + c]; col.appendChild(el("div", "c4-d" + (v === 1 ? " p" : v === 2 ? " a" : "") + (wl && wl.includes(r * C + c) ? " w" : ""))); } col.onclick = () => play(c); board.appendChild(col); } }
+  async function play(c) { if (over || busy || (!two && turn !== 1)) return; const i = drop(b, c); if (i < 0) return; busy = true; const me = turn; b[i] = me; moves++; sfx("tap"); let w = win(b, me); paint(w); if (w) return end(me, w); if (b.every(Boolean)) return end(0); if (two) { turn = 3 - me; busy = false; paint(); return; }
     turn = 2; await sleep(450); const ac = ai(); b[drop(b, ac)] = 2; w = win(b, 2); sfx("tap"); paint(w); if (w) return end(2, w); if (b.every(Boolean)) return end(0); turn = 1; busy = false; }
-  function end(r, w) { over = true; const stars = r === 1 ? (moves <= 12 ? 5 : moves <= 16 ? 4 : 3) : r === 0 ? 2 : 1; showResult(ctx, { win: r === 1, stars, title: r === 1 ? "Dördü sen yaptın!" : r === 0 ? "Berabere" : "Bilgisayar kazandı", text: `${moves} hamle oynadın.`, share: `${shareHead(ctx, r === 1 ? "kazandı" : r === 0 ? "berabere" : "kaybetti")}\n🔴🟡 Dört Gelsin${shareTail(ctx)}` }); }
-  ctx.auto = () => end(1); paint();
+  function end(r, w) { over = true; if (two) { showResult(ctx, { win: true, stars: 3, title: r === 0 ? "Berabere" : r === 1 ? "🔴 Kırmızı kazandı!" : "🟡 Sarı kazandı!", text: `${moves} hamlede bitti.`, share: `${shareHead(ctx, r === 1 ? "Kırmızı" : r === 2 ? "Sarı" : "berabere")}\n🔴🟡 Dört Gelsin 2 Oyuncu${shareTail(ctx)}` }); return; } const stars = r === 1 ? (moves <= 12 ? 5 : moves <= 16 ? 4 : 3) : r === 0 ? 2 : 1; showResult(ctx, { win: r === 1, stars, title: r === 1 ? "Dördü sen yaptın!" : r === 0 ? "Berabere" : "Bilgisayar kazandı", text: `${moves} hamle oynadın.`, share: `${shareHead(ctx, r === 1 ? "kazandı" : r === 0 ? "berabere" : "kaybetti")}\n🔴🟡 Dört Gelsin${shareTail(ctx)}` }); }
+  ctx.__a = () => end(1); paint();
 }
 
 /* ===== Köstebek Avı ===== */

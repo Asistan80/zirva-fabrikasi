@@ -47,7 +47,7 @@ _N2 = [
  ("hanoi","Hanoi Kulesi","🗼",("#f59e0b","#ef4444"),"mantik","4 diski ilk çubuktan üçüncüye taşı.",["Bir seferde tek disk taşınır.","Büyük disk küçüğün üstüne konamaz.","En az hamle 15."]),
  ("nonogram","Nonogram","🖼️",("#8b5cf6","#ec4899"),"mantik","Sayı ipuçlarına göre gizli resmi boya.",["Satır ve sütun başındaki sayılar, art arda dolu karelerin uzunluğunu gösterir.","Kareye dokun: dolu → ✕ → boş.","Tüm ipuçları sağlanınca çözülür."]),
  ("flood","Boya Taşması","🌊",("#06b6d4","#a855f7"),"mantik","Sol üstten boyayarak tahtayı tek renk yap.",["Alttaki renklerden birini seç, sol üst bölge o renge dönüşür.","Komşu aynı renkli kareler katılır.","20 hamlede tüm tahtayı tek renk yap."]),
- ("dortgelsin","Dört Gelsin","🔴",("#2563eb","#facc15"),"mantik","Bilgisayara karşı yan yana 4 taşı diz.",["Bir sütuna dokun, taş aşağı düşer.","Yatay, dikey veya çapraz 4 taş dizersen kazanırsın.","Bilgisayar da seni engellemeye çalışır."]),
+ ("dortgelsin","Dört Gelsin","🔴",("#2563eb","#facc15"),"mantik","Bilgisayara karşı ya da iki kişi yan yana 4 taşı diz.",["Bir sütuna dokun, taş aşağı düşer.","Yatay, dikey veya çapraz 4 taş dizersen kazanırsın.","Bilgisayar da seni engellemeye çalışır. 2 Oyuncu modunda arkadaşınla sırayla oynarsın."]),
  ("kostebek","Köstebek Avı","🐹",("#84cc16","#f59e0b"),"refleks","30 saniyede köstebeklere vur, bombalardan kaç.",["🐹 +1, ⭐ +3, 💣 −3 puan.","Delikten çıkanlara hızlıca dokun.","20 puan yaparsan kazanırsın."]),
  ("yilan","Yılan","🐍",("#16a34a","#14b8a6"),"refleks","12 elma ye, duvara ve kendine çarpma.",["Ok tuşları veya kaydırma ile yön ver.","Her elma seni uzatır.","12 elmaya ulaşırsan kazanırsın."]),
  ("susirala","Su Sıralama","🧪",("#3b82f6","#34d399"),"mantik","Renkli suları aynı renkler bir tüpte olacak şekilde sırala.",["Bir tüpe, sonra hedef tüpe dokun.","Üstteki renk aynı renge ya da boş tüpe dökülür.","Her tüp tek renk olunca biter. Geri al düğmesi var."]),
@@ -60,7 +60,7 @@ GAMES["minisudoku"] = dict(title="Mini Sudoku", emoji="🔢", grad=("#06b6d4","#
 _N3 = [
  ("tetris","Blok Düşür","🧱",("#22d3ee","#a855f7"),"refleks","Klasik düşen bloklar. 10 satır temizle.",["◀ ▶ ile kaydır, ⟳ ile döndür, ▼ hızlandır, ⏬ ile direkt bırak.","Klavyede ok tuşları ve boşluk da çalışır.","Satır doldurunca silinir, hız artar.","10 satır temizlersen kazanırsın."]),
  ("labirent","Labirent","🧭",("#8b5cf6","#0ea5e9"),"mantik","Çıkışa ulaş, yolda 3 yıldızı topla.",["Ok tuşları, kaydırma veya ekran düğmeleriyle ilerle.","Küçük, orta veya büyük labirent seçebilirsin.","Süre ve yıldız sayısı puanını belirler."]),
- ("reversi","Reversi","⚫",("#16a34a","#0f172a"),"mantik","Bilgisayara karşı taşları çevirerek tahtayı fethet.",["Siyah sensin. Taşını rakibin taşlarını kıstıracak yere koy.","Kıstırılan taşlar senin rengine döner.","Nokta ile gösterilen yerlere oynayabilirsin.","Bitince çok taşı olan kazanır."]),
+ ("reversi","Reversi","⚫",("#16a34a","#0f172a"),"mantik","Bilgisayara karşı ya da 2 oyunculu: taşları çevirerek tahtayı fethet.",["Siyah sensin. Taşını rakibin taşlarını kıstıracak yere koy.","Kıstırılan taşlar senin rengine döner.","Nokta ile gösterilen yerlere oynayabilirsin.","Bitince çok taşı olan kazanır."]),
  ("blackjack","Blackjack 21","🃏",("#b91c1c","#0f766e"),"mantik","Kasaya karşı 21'e en yakın eli yap. 5 el oynanır.",["Çek ile kart al, Dur ile bekle.","21'i geçersen kaybedersin.","Kasa 17'ye kadar kart çeker.","5 elde kasadan çok el kazanırsan kazanırsın."]),
  ("karakaro","Kara Karo","⬛",("#334155","#0ea5e9"),"refleks","Siyah karolara en hızlı şekilde bas. 40 karoyu bitir.",["Sadece en alttaki siyah karoya dokun.","Yanlış yere basarsan biter.","Klavyede D F J K tuşları da çalışır.","Ne kadar hızlıysan o kadar çok yıldız."]),
  ("kus","Zırva Kuşu","🐦",("#38bdf8","#22c55e"),"refleks","Boruların arasından geç, 15 boruyu aş.",["Ekrana dokun veya boşluk tuşuna bas: kuş zıplar.","Borulara ve zemine çarpma.","15 boru geçersen kazanırsın."]),
@@ -75,6 +75,12 @@ _N4 = [
  ("tank","Tank Savaşı","🪖",("#15803d","#b45309"),"refleks","Üssünü koru, düşman tanklarını yok et.",["Ok tuşları/WASD ile sür, boşluk ile ateş et. Ekran düğmeleri de var.","Tuğla duvarlar kırılır, çelik duvarlar kırılmaz.","Alttaki 🏰 üssün yıkılırsa ya da 3 canın biterse kaybedersin.","5 düşman tankını da yok et."]),
 ]
 for s,t,e,g,c,d,r in _N4:
+    GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
+_N5 = [
+ ("noktaci","Noktacı","🟡",("#facc15","#7c3aed"),"refleks","Labirentteki tüm noktaları ye, hayaletlerden kaç.",["Ok tuşları/WASD, kaydırma veya ekran düğmeleriyle yön ver.","Tüm noktaları yersen kazanırsın.","Büyük beyaz noktayı yersen hayaletler korkar, onları yiyebilirsin.","3 canın var, hayalete yakalanırsan bir can gider."]),
+ ("uzay","Uzay Savunması","🚀",("#1e3a8a","#7c3aed"),"refleks","Uzaylı istilacıları indirmeden vur.",["◀ ▶ veya ok tuşlarıyla gemiyi sür, boşluk/Ateş ile vur. Ekrana sürükleyip dokunarak da oynanır.","Yeşil kalkanlar seni korur ama vurulunca kırılır.","İstilacılar sana ulaşırsa ya da 3 canın biterse kaybedersin.","40 istilacıyı da vurursan kazanırsın."]),
+]
+for s,t,e,g,c,d,r in _N5:
     GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
 for _s in ("kelime","kodkir","hedef24","kaydir","hafiza","emoji"):
     GAMES[_s].setdefault("cat", {"kelime":"kelime","kodkir":"mantik","hedef24":"sayi","kaydir":"mantik","hafiza":"refleks","emoji":"mantik"}[_s])
