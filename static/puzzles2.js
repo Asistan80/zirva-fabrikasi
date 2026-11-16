@@ -87,31 +87,56 @@ const PP = {
   "Ü": [["Salkım salkım, şarap yapılan meyve", "ÜZÜM"], ["Liseden sonra gidilen yüksek öğrenim kurumu", "ÜNİVERSİTE"]], V: [["İnsanın başı, gövdesi ve kollarından oluşan bütün", "VÜCUT"], ["İstanbul'da iki yaka arasında giden deniz taşıtı", "VAPUR"]],
   Y: [["Gökten damla damla düşen su", "YAĞMUR"], ["Gece gökyüzünde parlayan küçük ışık noktaları", "YILDIZ"]], Z: [["Çizgili at benzeri Afrika hayvanı", "ZEBRA"], ["Saniye, dakika, saat ile ölçülen şey", "ZAMAN"]],
 };
+const PPH = {
+  A: ["Kurtuluş Savaşı'nda 'Mustafa Kemal' unvanının sonradan eklendiği, 1923'ten beri başkent olan kent", "ANKARA"], B: ["İki tekerlekli, zincirli, kaslarla çalışan ulaşım aracı", "BİSİKLET"], C: ["Perşembe ile Cumartesi arasında kalan hafta günü", "CUMA"],
+  "Ç": ["Kitap, defter ve kalem taşımak için omuza ya da sırta takılan eşya", "ÇANTA"], D: ["Su ile toprak arasındaki en geniş su kütlesi; 'Karadeniz' ve 'Akdeniz' gibi adlar alır", "DENİZ"], E: ["Newton'a ilham verdiği söylenen, ağaçtan düşen meyve", "ELMA"],
+  F: ["Pembe tüylü, tek ayak üstünde uyuyan uzun boyunlu kuş", "FLAMİNGO"], G: ["Dünya'ya ışık ve ısı veren yıldız", "GÜNEŞ"], H: ["Kediler, köpekler ve kuşlar bu kümenin üyesidir; bitkilerden farklı olarak canlı ve hareketlidir", "HAYVAN"],
+  I: ["Elektrik düğmesine basınca odayı dolduran, karanlığın düşmanı", "IŞIK"], "İ": ["Terzinin en bilinen küçük aracı, ucu sivridir ve iplik geçirilir", "İĞNE"], J: ["Yarışma ve sanat etkinliklerinde puan veren değerlendirme kurulu", "JÜRİ"],
+  K: ["Bir raftan alınır, sayfaları çevrilir, kapağı vardır", "KİTAP"], L: ["Aladdin'in sihirli olanı; masa üstünde ışık verir, bu harfle başlar", "LAMBA"], M: ["Yemek pişen odanın adı", "MUTFAK"], N: ["Dicle ve Fırat gibi, denize doğru akan büyük su yolu", "NEHİR"],
+  O: ["Evin içindeki bölümlerden her biri; yatak, çocuk veya oturma türleri vardır", "ODA"], "Ö": ["Okulda ders anlatan, sınıfın başındaki kişi", "ÖĞRETMEN"], P: ["Pazar gününden bir sonraki, haftanın ilk iş günü", "PAZARTESİ"], R: ["Yelkenliyi iten, uçurtmayı uçuran hava hareketi", "RÜZGAR"],
+  S: ["Susayınca içilen, berrak, tatsız ve kokusuz sıvı", "SU"], "Ş": ["Yağmurda açılan, saplı, kumaş gövdeli koruyucu", "ŞEMSİYE"], T: ["Sofrada yemeğin konulduğu yassı kap", "TABAK"], U: ["Havada giden, kanatlı ve motorlu yolcu taşıtı", "UÇAK"],
+  "Ü": ["Salkım hâlinde olur, kurutulursa kuru üzüm, sıkılırsa pekmez ya da şarap olur", "ÜZÜM"], V: ["Başı, kolları, bacakları ve gövdesiyle insanın tamamı", "VÜCUT"], Y: ["Bulutlardan damla damla inen, şemsiyeyi açtıran gök olayı", "YAĞMUR"], Z: ["Siyah beyaz çizgili at akrabası, Afrika'da yaşar", "ZEBRA"],
+};
+function chooser(root, A, title, list, cb) { // list=[[key,label,desc]]
+  const { el } = A; const box = el("div", "md-box"); box.appendChild(el("div", "md-title", title)); const g = el("div", "md-list");
+  list.forEach(([k, l, d]) => { const b = el("button", "md-btn", `<b>${l}</b><small>${d}</small>`); b.onclick = () => { box.remove(); cb(k); }; g.appendChild(b); }); box.appendChild(g); root.appendChild(box); return box;
+}
 function gPassaparola(root, ctx, A) {
-  const { el, shuffle, sfx, tone, showResult, shareHead, shareTail } = A;
-  const order = "ABCÇDEFGHIİJKLMNOÖPRSŞTUÜVYZ".split("").filter(l => PP[l]);
-  const L = order.slice(); // 28 harfin tamamı
-  const Q = L.map(l => { const q = PP[l][Math.floor(ctx.rnd() * PP[l].length)]; return { l, clue: q[0], ans: q[1], st: 0 }; });
-  const TOT = 270; let left = TOT, cur = 0, over = false;
-  const ring = el("div", "pp-ring"); Q.forEach((q, i) => { const d = el("span", "pp-l", q.l); q.d = d; const a = i / Q.length * 6.2832 - 1.5708; d.style.left = (50 + 44 * Math.cos(a)) + "%"; d.style.top = (50 + 44 * Math.sin(a)) + "%"; ring.appendChild(d); });
-  const mid = el("div", "pp-mid"); const tm = el("div", "pp-time", fmt(left)); const letter = el("div", "pp-big", ""); const clue = el("div", "pp-clue", "");
-  mid.append(tm, letter, clue); ring.appendChild(mid);
-  const form = el("form", "pp-form"); const inp = el("input"); inp.placeholder = "Cevabını yaz..."; inp.autocomplete = "off"; inp.setAttribute("autocapitalize", "characters");
-  const go = el("button", "btn sm", "Cevapla"); go.type = "submit"; const pas = el("button", "btn sm ghost", "Pas"); pas.type = "button"; form.append(inp, go, pas);
-  root.append(ring, form);
-  function fmt(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
-  const nextIdx = from => { for (let k = 1; k <= Q.length; k++) { const j = (from + k) % Q.length; if (Q[j].st === 0 || Q[j].st === 3) return j; } return -1; };
-  function show() { Q.forEach((q, i) => q.d.className = "pp-l" + (q.st === 1 ? " ok" : q.st === 2 ? " no" : q.st === 3 ? " pas" : "") + (i === cur ? " cur" : "")); const q = Q[cur]; letter.textContent = q.l; clue.textContent = (q.l === "İ" || true ? q.l : q.l) + " ile başlar: " + q.clue; inp.value = ""; inp.focus(); }
-  function advance() { const n = nextIdx(cur); if (n < 0) return end(); cur = n; show(); }
-  form.onsubmit = e => { e.preventDefault(); if (over) return; const v = FOLD(inp.value); if (!v) return; const q = Q[cur]; if (v === FOLD(q.ans)) { q.st = 1; sfx("good"); } else { q.st = 2; sfx("bad"); q.wrong = inp.value; } advance(); };
-  pas.onclick = () => { if (over) return; Q[cur].st = 3; tone(300, .06); advance(); };
-  const timer = setInterval(() => { if (over) return; left--; tm.textContent = fmt(left); if (left <= 10) tm.classList.add("hot"); if (left <= 0) end(); }, 1000); ctx.cleanup = () => clearInterval(timer);
-  function end() { over = true; clearInterval(timer); Q.forEach(q => { if (q.st === 3 || q.st === 0) q.d.className = "pp-l pas"; });
-    const ok = Q.filter(q => q.st === 1).length, win = ok >= 14, stars = ok >= 25 ? 5 : ok >= 21 ? 4 : ok >= 17 ? 3 : ok >= 12 ? 2 : 1;
-    const missed = Q.filter(q => q.st !== 1).slice(0, 6).map(q => `${q.l}: ${q.ans}`).join(" · ");
-    showResult(ctx, { win, stars, title: win ? "Parola çözüldü!" : "Süre doldu", text: `${Q.length} harften ${ok} tanesini bildin.${missed ? "<br><small>Kaçırdıkların: " + missed + "</small>" : ""}`, extra: { correct: ok }, share: `${shareHead(ctx, ok + "/" + Q.length)}\n${Q.map(q => q.st === 1 ? "🟩" : q.st === 2 ? "🟥" : "⬜").join("")}${shareTail(ctx)}` }); }
-  ctx.auto = () => { Q.forEach(q => { q.st = 1; }); end(); };
-  show();
+  const modes = [["kolay", "🟢 Kolay", "Kolay sorular · 300 sn · 8 harf ipucu"], ["normal", "🟡 Normal", "Orta sorular · 270 sn · 5 harf ipucu"], ["zor", "🔴 Zor", "Zor sorular · 200 sn · 2 ipucu · yanlış −5 sn"], ["cift", "👥 2 Oyuncu", "Aynı cihazda sırayla · kişi başı 120 sn · bilen devam eder"]];
+  const box = chooser(root, A, "Passaparola modunu seç", modes, m => run(m));
+  ctx.auto = () => { const run0 = ctx.__run; if (!run0) { box.remove(); run("normal"); } ctx.__auto && ctx.__auto(); };
+  function run(mode) {
+    const { el, shuffle, sfx, tone, showResult, shareHead, shareTail } = A; const two = mode === "cift";
+    const order = "ABCÇDEFGHIİJKLMNOÖPRSŞTUÜVYZ".split("").filter(l => PP[l]);
+    const Q = order.map(l => { const src = mode === "kolay" ? PP[l][0] : mode === "zor" ? PPH[l] : PP[l][1]; return { l, clue: src[0], ans: src[1], st: 0, rev: 0 }; });
+    const cfg = { kolay: [300, 8, 12, 0], normal: [270, 5, 14, 0], zor: [200, 2, 14, 5], cift: [120, 3, 0, 0] }[mode]; const hintMax = cfg[1], need = cfg[2], pen = cfg[3];
+    const left = two ? [120, 120] : [cfg[0]]; let hints = hintMax, cur = 0, who = 0, over = false;
+    const ring = el("div", "pp-ring"); Q.forEach((q, i) => { const d = el("span", "pp-l", q.l); q.d = d; const a = i / Q.length * 6.2832 - 1.5708; d.style.left = (50 + 44 * Math.cos(a)) + "%"; d.style.top = (50 + 44 * Math.sin(a)) + "%"; ring.appendChild(d); });
+    const mid = el("div", "pp-mid"); const tm = el("div", "pp-time", ""); const letter = el("div", "pp-big", ""); const clue = el("div", "pp-clue", ""); const mask = el("div", "pp-mask", "");
+    mid.append(tm, letter, clue, mask); ring.appendChild(mid);
+    const form = el("form", "pp-form"); const inp = el("input"); inp.placeholder = "Cevabını yaz..."; inp.autocomplete = "off"; inp.setAttribute("autocapitalize", "characters");
+    const go = el("button", "btn", "Cevapla"); go.type = "submit"; const pas = el("button", "btn ghost", "Pas"); pas.type = "button"; const hb = el("button", "btn ghost", ""); hb.type = "button"; form.append(inp, go, pas, hb);
+    const score = el("div", "pp-score", ""); root.append(score, ring, form);
+    const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    const nextIdx = from => { for (let k = 1; k <= Q.length; k++) { const j = (from + k) % Q.length; if (Q[j].st === 0 || Q[j].st === 3) return j; } return -1; };
+    const cnt = p => Q.filter(q => q.st === 1 && (q.by || 0) === p).length;
+    function paintTop() { if (two) { tm.innerHTML = `<span class="${who === 0 ? "me" : ""}">🔵 ${fmt(left[0])}</span> <span class="${who === 1 ? "me" : ""}">🌸 ${fmt(left[1])}</span>`; score.innerHTML = `<span class="p0">Oyuncu 1: <b>${cnt(0)}</b></span><span class="p1">Oyuncu 2: <b>${cnt(1)}</b></span><span class="turn">Sıra: ${who === 0 ? "🔵 Oyuncu 1" : "🌸 Oyuncu 2"}</span>`; } else { tm.textContent = "⏱ " + fmt(left[0]); tm.classList.toggle("hot", left[0] <= 10); score.innerHTML = `<span>✅ ${cnt(0)}</span><span>❌ ${Q.filter(q => q.st === 2).length}</span><span>⏭ ${Q.filter(q => q.st === 3).length}</span>`; } hb.textContent = `🔤 Harf ipucu (${hints})`; hb.disabled = hints <= 0; }
+    function maskTxt(q) { const L = [...q.ans]; return L.map((c, i) => i < q.rev ? c : "_").join(" "); }
+    function show() { Q.forEach((q, i) => q.d.className = "pp-l" + (q.st === 1 ? (two ? " ok" + (q.by || 0) : " ok") : q.st === 2 ? " no" : q.st === 3 ? " pas" : "") + (i === cur ? " cur" : "")); const q = Q[cur]; letter.textContent = q.l; clue.textContent = q.l + " ile başlar: " + q.clue; mask.textContent = maskTxt(q); inp.value = ""; paintTop(); inp.focus(); }
+    function swap() { if (!two) return; const o = 1 - who; if (left[o] > 0) who = o; }
+    function advance(sw) { if (sw) swap(); const n = nextIdx(cur); if (n < 0) return end(); cur = n; show(); }
+    form.onsubmit = e => { e.preventDefault(); if (over) return; const v = FOLD(inp.value); if (!v) return; const q = Q[cur];
+      if (v === FOLD(q.ans)) { q.st = 1; q.by = who; sfx("good"); advance(false); } else { q.st = 2; sfx("bad"); if (pen) left[0] = Math.max(0, left[0] - pen); if (!two) advance(false); else { q.st = 3; advance(true); } if (left[0] <= 0 && !two) end(); } };
+    pas.onclick = () => { if (over) return; Q[cur].st = 3; tone(300, .06); advance(true); };
+    hb.onclick = () => { if (over || hints <= 0) return; const q = Q[cur]; if (q.rev >= [...q.ans].length - 1) return; q.rev++; hints--; tone(660, .08); mask.textContent = maskTxt(q); paintTop(); inp.focus(); };
+    const timer = setInterval(() => { if (over) return; left[two ? who : 0]--; if (two) { if (left[who] <= 0) { left[who] = 0; if (left[1 - who] > 0) { who = 1 - who; } else return end(); } } else if (left[0] <= 0) return end(); paintTop(); }, 1000);
+    ctx.cleanup = () => clearInterval(timer);
+    function end() { if (over) return; over = true; clearInterval(timer); Q.forEach(q => { if (q.st === 3 || q.st === 0) q.d.className = "pp-l pas"; });
+      if (two) { const a = cnt(0), b = cnt(1); const t = a === b ? "Berabere!" : a > b ? "🔵 Oyuncu 1 kazandı!" : "🌸 Oyuncu 2 kazandı!"; showResult(ctx, { win: true, stars: Math.max(1, Math.min(5, Math.round(Math.max(a, b) / 4))), title: t, text: `Oyuncu 1: <b>${a}</b> doğru · Oyuncu 2: <b>${b}</b> doğru`, extra: { correct: Math.max(a, b), mode }, share: `${shareHead(ctx, a + "-" + b)}\n👥 Passaparola 2 Oyuncu: ${t}${shareTail(ctx)}` }); return; }
+      const ok = cnt(0), win = ok >= need, stars = ok >= 25 ? 5 : ok >= 21 ? 4 : ok >= 17 ? 3 : ok >= 12 ? 2 : 1; const missed = Q.filter(q => q.st !== 1).slice(0, 6).map(q => `${q.l}: ${q.ans}`).join(" · ");
+      showResult(ctx, { win, stars, title: win ? "Parola çözüldü!" : "Süre doldu", text: `[${mode.toUpperCase()}] ${Q.length} harften ${ok} tanesini bildin. (kazanmak için ${need})${missed ? "<br><small>Kaçırdıkların: " + missed + "</small>" : ""}`, extra: { correct: mode === "zor" ? ok + 2 : ok, mode }, share: `${shareHead(ctx, ok + "/" + Q.length + " " + mode)}\n${Q.map(q => q.st === 1 ? "🟩" : q.st === 2 ? "🟥" : "⬜").join("")}${shareTail(ctx)}` }); }
+    ctx.__run = mode; ctx.__auto = () => { Q.forEach(q => { q.st = 1; q.by = 0; }); end(); }; show();
+  }
 }
 
 /* ===== 3) Adam Asmaca ===== */
@@ -224,6 +249,6 @@ function gDogru(root, ctx, A) {
   ctx.auto = async () => { for (let k = 0; k < 10; k++) { pick(qs[i][1] === 1 ? 1 : 0); await sleep(1700); } };
   show();
 }
-window.PZ_DATA = { GROUPS, ALLW, THEMES, TRU, FOLD };
+window.PZ_DATA = { GROUPS, ALLW, THEMES, TRU, FOLD, chooser };
 window.PZX = Object.assign(window.PZX || {}, { kelimeavi: gKelimeAvi, passaparola: gPassaparola, adamasmaca: gAdam, anagram: gAnagram, baglanti: gBaglanti, dogruyanlis: gDogru });
 })();

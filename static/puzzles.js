@@ -89,7 +89,11 @@ function untilMidnight() {
 function showResult(ctx, o) {
   // o: {win, stars, title, text, shareLines, extra}
   if (o.share) { const first = o.share.split("\n")[0].replace("🏭 Zırva Fabrikası · ", ""); o.share = o.share.replace(/(\S+\/bulmaca\/\S+)$/, u => u.split("?")[0] + "?m=" + encodeURIComponent(first.slice(0, 80))); }
-  const r = record(ctx.slug, ctx.mode, o.win, o.stars, Object.assign({ share: o.share }, o.extra));
+  clearInterval(window.__pzck); ctx.secs = Math.max(1, Math.round((Date.now() - (ctx.t0 || Date.now())) / 1000));
+  o.text = (o.text || "") + `<br><small class="muted">⏱ Toplam süre: ${fmtTime(ctx.secs)}</small>`;
+  const r = record(ctx.slug, ctx.mode, o.win, o.stars, Object.assign({ share: o.share, time: ctx.secs }, o.extra));
+  let newRec = false; try { const pp = getP(); pp.best = pp.best || {}; const ob = pp.best[ctx.slug]; if (o.win && (!ob || o.stars > ob.stars || (o.stars === ob.stars && ctx.secs < ob.time))) { pp.best[ctx.slug] = { stars: o.stars, time: ctx.secs }; newRec = !!ob; saveP(pp); } } catch (e) {}
+  if (newRec) o.title += " 🏆";
   const box = $("#result"); box.hidden = false; box.innerHTML = "";
   box.className = "out pz-result";
   const next = gameIds().find(g => g !== ctx.slug && !(getP().days[todayKey()] || {})[g]);
@@ -383,7 +387,7 @@ function switchMode(mode, fresh) { CUR.mode = mode; start(); }
 function start() {
   const slug = CUR.slug, root = $("#game"), box = $("#result");
   if (CUR.ctx && CUR.ctx.cleanup) CUR.ctx.cleanup();
-  root.innerHTML = ""; box.hidden = true; box.innerHTML = ""; clearInterval(window.__cd);
+  root.innerHTML = ""; box.hidden = true; box.innerHTML = ""; clearInterval(window.__cd); clearInterval(window.__pzck); { const c0 = $("#pzClock"); if (c0) c0.textContent = ""; }
   $$("[data-mode]").forEach(b => b.classList.toggle("on", b.dataset.mode === CUR.mode));
   const opts = $("#opts"); opts.innerHTML = "";
   const key = todayKey(), done = (getP().days[key] || {})[slug];
@@ -402,7 +406,9 @@ function start() {
     const nb = el("button", "btn sm ghost", "🔄 Yeni bulmaca"); nb.onclick = start; opts.appendChild(nb);
   }
   const seed = CUR.mode === "daily" ? hash(slug + ":" + key) : hash(slug + ":" + Math.random() + Date.now());
-  const ctx = { slug, mode: CUR.mode, key, rnd: rng(seed), opts: o }; CUR.ctx = ctx; window.__pzctx = ctx;
+  const ctx = { slug, mode: CUR.mode, key, rnd: rng(seed), opts: o, t0: Date.now() }; CUR.ctx = ctx; window.__pzctx = ctx;
+  let ck = $("#pzClock"); if (!ck) { ck = el("div", "pz-clock"); ck.id = "pzClock"; root.parentNode.insertBefore(ck, root); } ck.textContent = "⏱ 0:00"; clearInterval(window.__pzck);
+  window.__pzck = setInterval(() => { ck.textContent = "⏱ " + fmtTime(Math.round((Date.now() - ctx.t0) / 1000)); }, 1000);
   root.className = "pz-stage g-" + slug; (GAMES[slug] || (window.PZX || {})[slug])(root, ctx, window.PZ_API);
 }
 function challengeBanner() {
@@ -425,6 +431,7 @@ function initHub() {
   $("#hBar").style.width = lv.pct + "%"; $("#hNext").textContent = lv.next ? `${lv.next - p.xp} XP sonra: ${LEVELS[lv.i + 1][1]}` : "En yüksek seviyedesin! 👑";
   $("#hToday").textContent = `${doneN}/${gameIds().length}`; $("#hTodayBar").style.width = (doneN * 100 / gameIds().length) + "%";
   $$("[data-game]").forEach(t => { const d = day[t.dataset.game]; if (d && d.done) { t.classList.add("solved"); const s = $(".gs", t); if (s) s.textContent = "★".repeat(d.stars) + "☆".repeat(5 - d.stars); } });
+  $$("[data-game]").forEach(t => { const b = (p.best || {})[t.dataset.game], g = $(".gb", t); if (g && b) g.textContent = `🏆 ${"★".repeat(b.stars)} · ${fmtTime(b.time)}`; });
   const bx = $("#badges"); bx.innerHTML = BADGES.map(b => `<div class="badge ${p.badges.includes(b[0]) ? "on" : ""}" title="${b[3]}"><span>${b[1]}</span><b>${b[2]}</b><small>${b[3]}</small></div>`).join("");
   const cd = $("#hCd"); const upd = () => cd.textContent = untilMidnight(); upd(); setInterval(upd, 1000);
   // son 14 gün

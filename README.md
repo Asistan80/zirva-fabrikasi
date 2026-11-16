@@ -46,3 +46,10 @@ Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
 - **Düzeltmeler:** Mayın, Işıklar, 2048 ve Renk Dizisi tahtaları çökmüştü (genişlik 0), düzeltildi. Passaparola artık 28 harfin tamamı ile, 270 sn, 14+ doğru kazandırır (rozet: 22+).
 - **12 yeni oyun (toplam 31):** Sesli Harf Kaçtı, Atasözü Tamamla, Hangisi Farklı, Başkent Bilmece, Renk Şaşırtmaca (Stroop), Hanoi Kulesi, Nonogram, Boya Taşması, Dört Gelsin (bilgisayara karşı), Köstebek Avı, Yılan, Su Sıralama (`static/puzzles4.js`).
 - Merkez sayfada arama kutusu ve "Bana rastgele oyun" düğmesi.
+
+### v6.3
+- **Passaparola:** 4 mod — Kolay / Normal / Zor (her modda farklı soru seti, zor modda 200 sn ve yanlış −5 sn) ve 👥 2 Oyuncu (aynı cihazda, kişi başı 120 sn, bilen devam eder). 🔤 Harf ipucu: cevabın harflerini tek tek açar (hak sınırlı).
+- **Sudoku 9x9:** Kolay/Normal/Zor, kalem notları, ipucu hakkı, aynı rakam vurgusu. 6x6 sürüm "Mini Sudoku" olarak ayrı oyun.
+- **6 yeni oyun (toplam 38):** Blok Düşür (Tetris), Labirent, Reversi (bilgisayara karşı), Blackjack 21, Kara Karo, Zırva Kuşu (`static/puzzles5.js`).
+- **Tüm oyunlarda:** üst kısımda canlı süre sayacı, sonuçta toplam süre, 🏆 kişisel rekor (hub kartlarında görünür), daha büyük tahtalar, gradyan renkler.
+- `window.PZ_DATA.chooser` ile oyunlara kolayca mod/zorluk seçici eklenebilir.

@@ -31,7 +31,6 @@ _N = [
  ("dogruyanlis","Doğru mu Zırva mı","⚖️",("#10b981","#4c8dff"),"mantik","10 bilgiden hangisi gerçek, hangisi zırva?",["Her ifade için Doğru ya da Zırva seç.","Cevaptan sonra kısa açıklama çıkar.","10 sorudan 7 doğru yaparsan kazanırsın."]),
  ("mayin","Mayın Tarlası","💣",("#64748b","#ef4444"),"sayi","8x8 tarlada 10 mayına basmadan tüm güvenli kareleri aç.",["Sayı, çevresindeki 8 kareden kaçında mayın olduğunu gösterir.","Bayrak için sağ tık, uzun basma ya da Bayrak modu.","İlk dokunuş her zaman güvenlidir."]),
  ("g2048","2048","🔢",("#f59e0b","#ef4444"),"sayi","Aynı sayıları kaydırıp birleştir, 256'ya ulaş.",["Ok tuşları veya kaydırma ile tüm kareler hareket eder.","Aynı sayılar çarpışınca birleşir.","256'ya ulaşırsan kazanırsın; hamle kalmayınca ya da Bitir ile sonuç hesaplanır."]),
- ("sudoku","Mini Sudoku","🧮",("#4c8dff","#34d399"),"sayi","6x6 tabloyu 1-6 rakamlarıyla doldur.",["Her satırda, sütunda ve 2x3'lük kutuda 1-6 birer kez olmalı.","Bir kutu seç, rakam tuşuna bas.","Çakışan rakamlar kırmızı yanar."]),
  ("isiklar","Işıklar Sönsün","💡",("#fbbf24","#a56bff"),"mantik","Bir kareye basınca kendisi ve komşuları ters döner. Hepsini söndür.",["Dokunduğun kare ve 4 komşusu açılıp kapanır.","Amaç tüm ışıkları söndürmek.","En az hamleyle bitirirsen en çok yıldız."]),
  ("dizi","Sayı Dizisi","📈",("#ec4899","#a56bff"),"sayi","Dizideki kuralı çöz, eksik sayıyı bul.",["Her soruda 5 sayı verilir, 6.'yı bulursun.","4 şıktan doğrusunu seç.","6 sorudan 4 doğru yaparsan kazanırsın."]),
  ("carpim","Çarpım Hızı","⚡",("#ef4444","#f59e0b"),"sayi","60 saniyede en çok çarpmayı çöz.",["Çarpma sorusunun cevabını 4 şıktan seç.","Her yanlış 3 saniye götürür.","12 doğru yaparsan kazanırsın."]),
@@ -54,6 +53,19 @@ _N2 = [
  ("susirala","Su Sıralama","🧪",("#3b82f6","#34d399"),"mantik","Renkli suları aynı renkler bir tüpte olacak şekilde sırala.",["Bir tüpe, sonra hedef tüpe dokun.","Üstteki renk aynı renge ya da boş tüpe dökülür.","Her tüp tek renk olunca biter. Geri al düğmesi var."]),
 ]
 for s,t,e,g,c,d,r in _N2:
+    GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
+GAMES["sudoku"] = dict(title="Sudoku", emoji="🧮", grad=("#4c8dff","#34d399"), cat="sayi", desc="Klasik 9x9 Sudoku. Kolay, normal ve zor seçenekleri, kalem notları ve ipucu hakkı var.",
+  rules=["Her satırda, sütunda ve 3x3'lük kutuda 1-9 birer kez olmalı.","Bir kutu seç, rakam tuşuna bas. ✏️ Not modunda adayları küçük yazabilirsin.","Çakışan rakamlar kırmızı yanar, aynı rakamlar vurgulanır.","💡 İpucu seçili kutuyu doldurur, hakkın sınırlı."])
+GAMES["minisudoku"] = dict(title="Mini Sudoku", emoji="🔢", grad=("#06b6d4","#6366f1"), cat="sayi", desc="6x6 küçük Sudoku, kısa molalar için.", rules=["Her satırda, sütunda ve 2x3'lük kutuda 1-6 birer kez olmalı.","Bir kutu seç, rakam tuşuna bas.","Çakışan rakamlar kırmızı yanar."])
+_N3 = [
+ ("tetris","Blok Düşür","🧱",("#22d3ee","#a855f7"),"refleks","Klasik düşen bloklar. 10 satır temizle.",["◀ ▶ ile kaydır, ⟳ ile döndür, ▼ hızlandır, ⏬ ile direkt bırak.","Klavyede ok tuşları ve boşluk da çalışır.","Satır doldurunca silinir, hız artar.","10 satır temizlersen kazanırsın."]),
+ ("labirent","Labirent","🧭",("#8b5cf6","#0ea5e9"),"mantik","Çıkışa ulaş, yolda 3 yıldızı topla.",["Ok tuşları, kaydırma veya ekran düğmeleriyle ilerle.","Küçük, orta veya büyük labirent seçebilirsin.","Süre ve yıldız sayısı puanını belirler."]),
+ ("reversi","Reversi","⚫",("#16a34a","#0f172a"),"mantik","Bilgisayara karşı taşları çevirerek tahtayı fethet.",["Siyah sensin. Taşını rakibin taşlarını kıstıracak yere koy.","Kıstırılan taşlar senin rengine döner.","Nokta ile gösterilen yerlere oynayabilirsin.","Bitince çok taşı olan kazanır."]),
+ ("blackjack","Blackjack 21","🃏",("#b91c1c","#0f766e"),"mantik","Kasaya karşı 21'e en yakın eli yap. 5 el oynanır.",["Çek ile kart al, Dur ile bekle.","21'i geçersen kaybedersin.","Kasa 17'ye kadar kart çeker.","5 elde kasadan çok el kazanırsan kazanırsın."]),
+ ("karakaro","Kara Karo","⬛",("#334155","#0ea5e9"),"refleks","Siyah karolara en hızlı şekilde bas. 40 karoyu bitir.",["Sadece en alttaki siyah karoya dokun.","Yanlış yere basarsan biter.","Klavyede D F J K tuşları da çalışır.","Ne kadar hızlıysan o kadar çok yıldız."]),
+ ("kus","Zırva Kuşu","🐦",("#38bdf8","#22c55e"),"refleks","Boruların arasından geç, 15 boruyu aş.",["Ekrana dokun veya boşluk tuşuna bas: kuş zıplar.","Borulara ve zemine çarpma.","15 boru geçersen kazanırsın."]),
+]
+for s,t,e,g,c,d,r in _N3:
     GAMES[s] = dict(title=t, emoji=e, grad=g, desc=d, rules=r, cat=c)
 for _s in ("kelime","kodkir","hedef24","kaydir","hafiza","emoji"):
     GAMES[_s].setdefault("cat", {"kelime":"kelime","kodkir":"mantik","hedef24":"sayi","kaydir":"mantik","hafiza":"refleks","emoji":"mantik"}[_s])

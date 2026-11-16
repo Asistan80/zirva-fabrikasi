@@ -52,7 +52,7 @@ function gG2048(root, ctx, A) {
 }
 
 /* ===== Sudoku 6x6 ===== */
-function gSudoku(root, ctx, A) {
+function gMiniSudoku(root, ctx, A) {
   const { el, shuffle, sfx, showResult, shareHead, shareTail, fmtTime } = A; const N = 6;
   const digs = shuffle([1, 2, 3, 4, 5, 6], ctx.rnd), bands = shuffle([0, 1, 2], ctx.rnd), rowsIn = [0, 1, 2].map(() => shuffle([0, 1], ctx.rnd)), stacks = shuffle([0, 1], ctx.rnd), colsIn = [0, 1].map(() => shuffle([0, 1, 2], ctx.rnd));
   const rmap = [], cmap = []; bands.forEach((b, bi) => rowsIn[bi].forEach(x => rmap.push(b * 2 + x))); stacks.forEach((s, si) => colsIn[si].forEach(x => cmap.push(s * 3 + x)));
@@ -134,5 +134,5 @@ function gSimon(root, ctx, A) {
   ctx.auto = () => { over = true; level = GOAL + 1; end(true); };
   paint();
 }
-window.PZX = Object.assign(window.PZX || {}, { mayin: gMayin, g2048: gG2048, sudoku: gSudoku, isiklar: gIsiklar, dizi: gDizi, carpim: gCarpim, simon: gSimon });
+window.PZX = Object.assign(window.PZX || {}, { mayin: gMayin, g2048: gG2048, minisudoku: gMiniSudoku, isiklar: gIsiklar, dizi: gDizi, carpim: gCarpim, simon: gSimon });
 })();

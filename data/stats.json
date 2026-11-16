@@ -20,9 +20,9 @@
    "win": 3
   },
   "passaparola": {
-   "done": 3,
-   "daily": 3,
-   "win": 3
+   "done": 4,
+   "daily": 4,
+   "win": 4
   },
   "adamasmaca": {
    "done": 3,
@@ -54,9 +54,9 @@
    "daily": 3
   },
   "sudoku": {
-   "done": 3,
-   "daily": 3,
-   "win": 3
+   "done": 4,
+   "daily": 4,
+   "win": 4
   },
   "isiklar": {
    "done": 4,
@@ -104,9 +104,9 @@
    "win": 1
   },
   "hanoi": {
-   "done": 1,
-   "daily": 1,
-   "win": 1
+   "done": 2,
+   "daily": 2,
+   "win": 2
   },
   "nonogram": {
    "done": 1,
@@ -137,6 +137,41 @@
    "done": 1,
    "daily": 1,
    "win": 1
+  },
+  "minisudoku": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "tetris": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "labirent": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "reversi": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "blackjack": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "karakaro": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "kus": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
   }
  },
  "daily": {
@@ -158,7 +193,7 @@
    "roast": 0,
    "burc": 0,
    "test": 0,
-   "puzzle": 25
+   "puzzle": 35
   }
  },
  "since": "2026-11-13",
