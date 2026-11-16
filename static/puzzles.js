@@ -54,7 +54,7 @@ const BADGES = [
   ["tam", "🏆", "Tam Set", "Bir günde 10 bulmaca bitir", p => todayDone(p) >= 10],
   ["hepsi", "🌟", "Zırva Şampiyonu", "Bir günde tüm bulmacaları bitir", p => todayDone(p) >= gameIds().length],
   ["avci", "🔎", "Kelime Avcısı", "Kelime Avı'nı 2 dakikada bitir", p => Object.values(p.days).some(d => d.kelimeavi && d.kelimeavi.win && d.kelimeavi.secs <= 120)],
-  ["parola", "🎤", "Parola Ustası", "Passaparola'da 16+ doğru yap", p => Object.values(p.days).some(d => d.passaparola && d.passaparola.correct >= 16)],
+  ["parola", "🎤", "Parola Ustası", "Passaparola'da 22+ doğru yap", p => Object.values(p.days).some(d => d.passaparola && d.passaparola.correct >= 22)],
   ["yildiz", "⭐", "Mükemmeliyetçi", "Bir bulmacadan 5 yıldız al", p => Object.values(p.days).some(d => Object.values(d).some(v => v && v.stars === 5))],
   ["kelime3", "🔤", "Kelime Avcısı", "Zırva Kelime'yi 3 denemede bil", p => Object.values(p.days).some(d => d.kelime && d.kelime.win && d.kelime.tries <= 3)],
   ["xp500", "💎", "Usta Zırva", "500 XP topla", p => p.xp >= 500],

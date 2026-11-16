@@ -15,68 +15,128 @@
  "tests": {},
  "puzzle": {
   "kelimeavi": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "passaparola": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "adamasmaca": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "anagram": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "baglanti": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "dogruyanlis": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "mayin": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "g2048": {
-   "done": 2,
-   "daily": 2
-  },
-  "sudoku": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
-  },
-  "isiklar": {
    "done": 3,
    "daily": 3,
    "win": 3
   },
+  "passaparola": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "adamasmaca": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "anagram": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "baglanti": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "dogruyanlis": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "mayin": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "g2048": {
+   "done": 3,
+   "daily": 3
+  },
+  "sudoku": {
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "isiklar": {
+   "done": 4,
+   "daily": 4,
+   "win": 4
+  },
   "dizi": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
+   "done": 3,
+   "daily": 3,
+   "win": 3
   },
   "carpim": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
+   "done": 3,
+   "daily": 3,
+   "win": 3
   },
   "simon": {
-   "done": 2,
-   "daily": 2,
-   "win": 2
+   "done": 3,
+   "daily": 3,
+   "win": 3
+  },
+  "sesli": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "atasozu": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "farkli": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "baskent": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "stroop": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "hanoi": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "nonogram": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "flood": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "dortgelsin": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "kostebek": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "yilan": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
+  },
+  "susirala": {
+   "done": 1,
+   "daily": 1,
+   "win": 1
   }
  },
  "daily": {
@@ -92,6 +152,13 @@
    "burc": 0,
    "test": 0,
    "puzzle": 27
+  },
+  "2026-11-16": {
+   "mazeret": 0,
+   "roast": 0,
+   "burc": 0,
+   "test": 0,
+   "puzzle": 25
   }
  },
  "since": "2026-11-13",

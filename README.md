@@ -41,3 +41,8 @@ Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
 - **Günün oyunu:** hub'da öne çıkan banner, bu oyunda günlük ilk çözüm +%50 XP. Otomatik seçilir (İstanbul tarihine göre), admin panelinden sabitlenebilir (`featured_game`).
 - **Meydan okuma linki:** sonucu paylaşınca link `?m=...` ile gider; arkadaşın sayfayı açınca "aynı bulmaca, sen de dene" bandı görür (metin güvenli şekilde gösterilir).
 - Admin panelinde oyun açıp kapama zaten tüm 19 oyunu kapsar.
+
+### v6.2
+- **Düzeltmeler:** Mayın, Işıklar, 2048 ve Renk Dizisi tahtaları çökmüştü (genişlik 0), düzeltildi. Passaparola artık 28 harfin tamamı ile, 270 sn, 14+ doğru kazandırır (rozet: 22+).
+- **12 yeni oyun (toplam 31):** Sesli Harf Kaçtı, Atasözü Tamamla, Hangisi Farklı, Başkent Bilmece, Renk Şaşırtmaca (Stroop), Hanoi Kulesi, Nonogram, Boya Taşması, Dört Gelsin (bilgisayara karşı), Köstebek Avı, Yılan, Su Sıralama (`static/puzzles4.js`).
+- Merkez sayfada arama kutusu ve "Bana rastgele oyun" düğmesi.

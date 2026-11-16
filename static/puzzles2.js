@@ -90,9 +90,9 @@ const PP = {
 function gPassaparola(root, ctx, A) {
   const { el, shuffle, sfx, tone, showResult, shareHead, shareTail } = A;
   const order = "ABCÇDEFGHIİJKLMNOÖPRSŞTUÜVYZ".split("").filter(l => PP[l]);
-  const L = shuffle(order, ctx.rnd).slice(0, 20).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  const L = order.slice(); // 28 harfin tamamı
   const Q = L.map(l => { const q = PP[l][Math.floor(ctx.rnd() * PP[l].length)]; return { l, clue: q[0], ans: q[1], st: 0 }; });
-  const TOT = 200; let left = TOT, cur = 0, over = false;
+  const TOT = 270; let left = TOT, cur = 0, over = false;
   const ring = el("div", "pp-ring"); Q.forEach((q, i) => { const d = el("span", "pp-l", q.l); q.d = d; const a = i / Q.length * 6.2832 - 1.5708; d.style.left = (50 + 44 * Math.cos(a)) + "%"; d.style.top = (50 + 44 * Math.sin(a)) + "%"; ring.appendChild(d); });
   const mid = el("div", "pp-mid"); const tm = el("div", "pp-time", fmt(left)); const letter = el("div", "pp-big", ""); const clue = el("div", "pp-clue", "");
   mid.append(tm, letter, clue); ring.appendChild(mid);
@@ -107,7 +107,7 @@ function gPassaparola(root, ctx, A) {
   pas.onclick = () => { if (over) return; Q[cur].st = 3; tone(300, .06); advance(); };
   const timer = setInterval(() => { if (over) return; left--; tm.textContent = fmt(left); if (left <= 10) tm.classList.add("hot"); if (left <= 0) end(); }, 1000); ctx.cleanup = () => clearInterval(timer);
   function end() { over = true; clearInterval(timer); Q.forEach(q => { if (q.st === 3 || q.st === 0) q.d.className = "pp-l pas"; });
-    const ok = Q.filter(q => q.st === 1).length, win = ok >= 10, stars = ok >= 18 ? 5 : ok >= 15 ? 4 : ok >= 12 ? 3 : ok >= 8 ? 2 : 1;
+    const ok = Q.filter(q => q.st === 1).length, win = ok >= 14, stars = ok >= 25 ? 5 : ok >= 21 ? 4 : ok >= 17 ? 3 : ok >= 12 ? 2 : 1;
     const missed = Q.filter(q => q.st !== 1).slice(0, 6).map(q => `${q.l}: ${q.ans}`).join(" · ");
     showResult(ctx, { win, stars, title: win ? "Parola çözüldü!" : "Süre doldu", text: `${Q.length} harften ${ok} tanesini bildin.${missed ? "<br><small>Kaçırdıkların: " + missed + "</small>" : ""}`, extra: { correct: ok }, share: `${shareHead(ctx, ok + "/" + Q.length)}\n${Q.map(q => q.st === 1 ? "🟩" : q.st === 2 ? "🟥" : "⬜").join("")}${shareTail(ctx)}` }); }
   ctx.auto = () => { Q.forEach(q => { q.st = 1; }); end(); };
@@ -224,5 +224,6 @@ function gDogru(root, ctx, A) {
   ctx.auto = async () => { for (let k = 0; k < 10; k++) { pick(qs[i][1] === 1 ? 1 : 0); await sleep(1700); } };
   show();
 }
+window.PZ_DATA = { GROUPS, ALLW, THEMES, TRU, FOLD };
 window.PZX = Object.assign(window.PZX || {}, { kelimeavi: gKelimeAvi, passaparola: gPassaparola, adamasmaca: gAdam, anagram: gAnagram, baglanti: gBaglanti, dogruyanlis: gDogru });
 })();
