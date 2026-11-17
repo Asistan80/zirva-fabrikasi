@@ -184,7 +184,8 @@ function initBurc() {
 
 /* --- test --- */
 function initTest() {
-  const ans = []; let i = 0, res = null;
+  const ans = []; let i = 0, res = null; const friend = (new URLSearchParams(location.search).get("c") || "").slice(0, 60);
+  if (friend) { const b = document.createElement("div"); b.className = "glass chal"; b.style.cssText = "padding:10px 14px;margin-bottom:12px;text-align:center;border-radius:14px"; const bb = document.createElement("b"); bb.textContent = "🤝 Meydan okuma! "; b.append(bb, document.createTextNode(`Arkadaşın "${friend}" çıktı. Sen ne çıkacaksın?`)); $("#quiz").parentNode.insertBefore(b, $("#quiz")); }
   const q = QUESTIONS;
   function show() {
     $("#prog").style.width = (i / q.length * 100) + "%";
@@ -206,8 +207,11 @@ function initTest() {
     $("#quiz").hidden = true; $("#result").hidden = false;
     $("#rEmoji").textContent = res.emoji; $("#rTitle").textContent = res.title; $("#rText").textContent = res.text;
     $("#rPct").textContent = res.total > 3 ? `Bu testi çözenlerin %${res.pct}'i seninle aynı sonucu aldı` : "Bu testin ilk çözenlerinden birisin!";
+    if (friend) { const box = $("#cmp"), same = friend === res.title; const pair = [friend, res.title].sort().join("|"); let h = 7; for (const ch of pair) h = (h * 31 + ch.charCodeAt(0)) % 997; const pc = same ? 100 : 30 + h % 61;
+      box.hidden = false; box.innerHTML = ""; const t1 = document.createElement("div"); t1.style.cssText = "font-weight:800;font-size:1.1rem"; t1.textContent = same ? "🎉 Aynı çıktınız! Ruh ikizisiniz." : `Sen: ${res.title} · Arkadaşın: ${friend}`; const m = document.createElement("div"); m.className = "meter"; const bar = document.createElement("i"); bar.style.width = pc + "%"; m.appendChild(bar); const t2 = document.createElement("div"); t2.className = "muted small"; t2.textContent = `Uyum: %${pc}` + (same ? "" : pc > 70 ? " · birbirinizi tamamlıyorsunuz" : pc > 50 ? " · fena değil" : " · zıt kutuplar çekimi"); box.append(t1, m, t2); }
     confetti(150);
   }
+  $("#chal").onclick = () => { const url = `${location.origin}${location.pathname}?c=${encodeURIComponent(res.title)}`; const text = `${res.test}: Ben ${res.title} çıktım ${res.emoji} Sen ne çıkacaksın? ${url}`; if (navigator.share) navigator.share({ text }).catch(() => {}); else window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank"); navigator.clipboard && navigator.clipboard.writeText(url); toast("Meydan okuma linki kopyalandı ✓"); };
   $("#share").onclick = () => saveCard(makeCard(res.test.toUpperCase(), res.title, res.text, res.emoji, res.grad), "sonuc");
   $("#wa").onclick = () => waShare(`${res.test}: Ben ${res.title} çıktım! ${res.emoji}`);
   $("#copy").onclick = () => { navigator.clipboard && navigator.clipboard.writeText(`${res.test}: ${res.title} ${res.emoji} — ${location.href}`); toast("Kopyalandı ✓"); };

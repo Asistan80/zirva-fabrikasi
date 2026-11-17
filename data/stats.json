@@ -14,9 +14,9 @@
  },
  "tests": {
   "padisah": {
-   "done": 1,
+   "done": 2,
    "results": {
-    "fatih": 1
+    "fatih": 2
    }
   },
   "cay": {
@@ -131,6 +131,18 @@
    "done": 1,
    "results": {
     "gece": 1
+   }
+  },
+  "film": {
+   "done": 1,
+   "results": {
+    "komedi": 1
+   }
+  },
+  "grup": {
+   "done": 1,
+   "results": {
+    "organizator": 1
    }
   }
  },
@@ -355,7 +367,7 @@
    "mazeret": 0,
    "roast": 0,
    "burc": 0,
-   "test": 20
+   "test": 23
   }
  },
  "since": "2026-11-13",

@@ -165,3 +165,9 @@ for _k, _t in _NEW.items():
     _keys = list(_t["results"].keys())
     TESTS[_k] = {"title": _t["title"], "emoji": _t["emoji"], "desc": _t["desc"], "grad": tuple(_t["grad"]), "results": _t["results"],
                  "questions": [(_q, _rot(_keys, _i, _a)) for _i, (_q, _a) in enumerate(_t["q"])]}
+
+from testdata_extra2 import NEW_TESTS2 as _NEW2
+for _k, _t in _NEW2.items():
+    _keys = list(_t["results"].keys())
+    TESTS[_k] = {"title": _t["title"], "emoji": _t["emoji"], "desc": _t["desc"], "grad": tuple(_t["grad"]), "results": _t["results"],
+                 "questions": [(_q, _rot(_keys, _i, _a)) for _i, (_q, _a) in enumerate(_t["q"])]}
