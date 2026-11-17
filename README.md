@@ -63,3 +63,7 @@ Test için tarayıcı konsolunda `window.__pzctx.auto()` oyunu otomatik bitirir.
 - **Yeni oyunlar (toplam 45):** Noktacı (Pac-Man tarzı) ve Uzay Savunması (Space Invaders tarzı) — `static/puzzles7.js`.
 - **2 Oyuncu modu:** Dört Gelsin ve Reversi artık aynı cihazda iki kişi oynanabilir (başlangıçta mod seçilir).
 - **Arka plan müziği:** oyun sayfasında 🎶 düğmesi, oyuna göre farklı tonda sakin bir müzik üretir (WebAudio, dosya yok). Tercih tarayıcıda saklanır, ses kapalıysa çalmaz.
+
+### v7
+- **Testler:** 8 testin hepsi 5'ten 10 soruya çıkarıldı, 12 yeni test eklendi (toplam 20, hepsi 10 soru). Yeni testler: Dizi Karakteri, Mevsim, Kahve, Mahalle Karakteri, Telefon Uygulaması, Hayvan, Süper Güç, Sınıf Öğrencisi, Tatil Tipi, Müzik Türü, Oyun Karakteri Sınıfı, Ev Arkadaşı.
+- Ek içerik `testdata_extra.py` içinde. Cevaplar sonuç sırasına göre yazılır, her soruda sıra otomatik döndürülür (cevap konumu sabit kalmaz). Yeni test eklemek için `NEW_TESTS`'e ekle ve `python3 tools/make_og.py` çalıştır.

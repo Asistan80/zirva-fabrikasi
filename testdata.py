@@ -148,3 +148,20 @@ GRADS = {
 }
 for _k, _g in GRADS.items():
     TESTS[_k]["grad"] = _g
+
+
+# --- v7: ek sorular ve yeni testler (testdata_extra.py) ---
+from testdata_extra import EXTRA_Q, NEW_TESTS as _NEW
+
+def _rot(keys, i, answers):
+    n = len(keys)
+    return [(a, keys[(j + i) % n]) for j, a in enumerate(answers)]
+
+for _k, _qs in EXTRA_Q.items():
+    _t = TESTS[_k]; _keys = list(_t["results"].keys())
+    for _n, (_q, _a) in enumerate(_qs):
+        _t["questions"].append((_q, _rot(_keys, len(_t["questions"]), _a)))
+for _k, _t in _NEW.items():
+    _keys = list(_t["results"].keys())
+    TESTS[_k] = {"title": _t["title"], "emoji": _t["emoji"], "desc": _t["desc"], "grad": tuple(_t["grad"]), "results": _t["results"],
+                 "questions": [(_q, _rot(_keys, _i, _a)) for _i, (_q, _a) in enumerate(_t["q"])]}

@@ -12,7 +12,128 @@
  "burc": {
   "total": 0
  },
- "tests": {},
+ "tests": {
+  "padisah": {
+   "done": 1,
+   "results": {
+    "fatih": 1
+   }
+  },
+  "cay": {
+   "done": 1,
+   "results": {
+    "ince": 1
+   }
+  },
+  "toplanti": {
+   "done": 1,
+   "results": {
+    "notcu": 1
+   }
+  },
+  "sehir": {
+   "done": 1,
+   "results": {
+    "istanbul": 1
+   }
+  },
+  "zombi": {
+   "done": 1,
+   "results": {
+    "lider": 1
+   }
+  },
+  "yemek": {
+   "done": 1,
+   "results": {
+    "baklava": 1
+   }
+  },
+  "tembel": {
+   "done": 1,
+   "results": {
+    "enerjik": 1
+   }
+  },
+  "ofis": {
+   "done": 1,
+   "results": {
+    "zimba": 1
+   }
+  },
+  "dizi": {
+   "done": 1,
+   "results": {
+    "ask": 1
+   }
+  },
+  "mevsim": {
+   "done": 1,
+   "results": {
+    "yaz": 1
+   }
+  },
+  "kahve": {
+   "done": 1,
+   "results": {
+    "latte": 1
+   }
+  },
+  "mahalle": {
+   "done": 1,
+   "results": {
+    "bakkal": 1
+   }
+  },
+  "uygulama": {
+   "done": 1,
+   "results": {
+    "mesaj": 1
+   }
+  },
+  "hayvan": {
+   "done": 1,
+   "results": {
+    "kaplumbaga": 1
+   }
+  },
+  "supergu": {
+   "done": 1,
+   "results": {
+    "ucmak": 1
+   }
+  },
+  "ogrenci": {
+   "done": 1,
+   "results": {
+    "caliskan": 1
+   }
+  },
+  "tatil": {
+   "done": 1,
+   "results": {
+    "kultur": 1
+   }
+  },
+  "muzik": {
+   "done": 1,
+   "results": {
+    "arabesk": 1
+   }
+  },
+  "karakter": {
+   "done": 1,
+   "results": {
+    "buyucu": 1
+   }
+  },
+  "evarkadasi": {
+   "done": 1,
+   "results": {
+    "gece": 1
+   }
+  }
+ },
  "puzzle": {
   "kelimeavi": {
    "done": 3,
@@ -229,6 +350,12 @@
    "burc": 0,
    "test": 0,
    "puzzle": 46
+  },
+  "2026-11-17": {
+   "mazeret": 0,
+   "roast": 0,
+   "burc": 0,
+   "test": 20
   }
  },
  "since": "2026-11-13",
